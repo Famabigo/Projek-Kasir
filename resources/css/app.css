@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    /* Gradient Utilities dengan Warna Baru */
+    .gradient-primary {
+        background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);
+    }
+    
+        .gradient-secondary {
+        background: linear-gradient(135deg, #C7E339 0%, #0884D1 100%);
+        transition: all 0.3s ease;
+    }
+    
+    .gradient-accent {
+        background: linear-gradient(135deg, #CFD360 0%, #0884D1 100%);
+    }
+    
+    .gradient-text-primary {
+        background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    /* Button Styles dengan Warna Baru */
+    .btn-primary {
+        @apply px-6 py-3 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200;
+        background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 20px 25px -5px rgba(12, 85, 135, 0.3);
+    }
+    
+    .btn-secondary {
+        @apply px-6 py-3 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200;
+        background: linear-gradient(135deg, #C7E339 0%, #B8BC4D 100%);
+    }
+    
+    /* Card Styles */
+    .card-gradient-blue {
+        background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);
+    }
+    
+    .card-gradient-green {
+        background: linear-gradient(135deg, #C7E339 0%, #B8BC4D 100%);
+    }
+    
+    .card-gradient-light {
+        background: linear-gradient(135deg, #B1D7F2 0%, #8CC3E8 100%);
+    }
+    
+    /* Link Colors */
+    .link-primary {
+        color: #0884D1;
+    }
+    
+    .link-primary:hover {
+        color: #0C5587;
+    }
+    
+    /* Badge Styles */
+    .badge-primary {
+        @apply px-3 py-1 rounded-full text-sm font-semibold;
+        background-color: #B1D7F2;
+        color: #0C5587;
+    }
+    
+    .badge-success {
+        @apply px-3 py-1 rounded-full text-sm font-semibold;
+        background-color: #C7E339;
+        color: #094468;
+    }
+}
