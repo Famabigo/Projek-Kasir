@@ -10,15 +10,28 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
                         </svg>
                     </div>
-                    <span class="text-xl font-bold" style="color: #0C5587;">Market</span>
+                    <span class="text-xl font-bold" style="color: #0C5587;">ShopEase</span>
                 </a>
 
                 <!-- Menu Button -->
-                <button @click="menuOpen = !menuOpen" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
+                <button @click="menuOpen = !menuOpen" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors relative">
                     <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
                     <span class="text-sm font-medium text-gray-700">Menu</span>
+                    <?php if(auth()->guard()->check()): ?>
+                    <?php if(auth()->user()->role === 'admin'): ?>
+                        <?php
+                            $laporanPending = \App\Models\LaporanBarang::where('status', 'pending')->count();
+                        ?>
+                        <?php if($laporanPending > 0): ?>
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold animate-pulse">
+                            <?php echo e($laporanPending); ?>
+
+                        </span>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    <?php endif; ?>
                 </button>
             </div>
 
@@ -227,7 +240,7 @@
 
         <?php if(auth()->user()->role === 'kasir'): ?>
         <div class="px-6 py-8 max-w-7xl mx-auto">
-            <div class="grid grid-cols-4 gap-6">
+            <div class="grid grid-cols-5 gap-6">
                 <a href="<?php echo e(route('kasir.dashboard')); ?>" class="flex items-center space-x-2 text-gray-700 hover:text-[#0C5587] pb-2 <?php echo e(request()->routeIs('kasir.dashboard') ? 'border-b-2 border-[#0C5587] text-[#0C5587]' : ''); ?>">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -244,7 +257,19 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                     </svg>
-                    <span>Riwayat</span>
+                    <span>Riwayat Transaksi</span>
+                </a>
+                <a href="<?php echo e(route('kasir.stok.index')); ?>" class="flex items-center space-x-2 text-gray-700 hover:text-[#0C5587] pb-2 <?php echo e(request()->routeIs('kasir.stok.*') ? 'border-b-2 border-[#0C5587] text-[#0C5587]' : ''); ?>">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                    </svg>
+                    <span>Cek Stok</span>
+                </a>
+                <a href="<?php echo e(route('kasir.members.index')); ?>" class="flex items-center space-x-2 text-gray-700 hover:text-[#0C5587] pb-2 <?php echo e(request()->routeIs('kasir.members.*') ? 'border-b-2 border-[#0C5587] text-[#0C5587]' : ''); ?>">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                    <span>Kelola Member</span>
                 </a>
             </div>
         </div>
@@ -252,7 +277,7 @@
 
         <?php if(auth()->user()->role === 'admin'): ?>
         <div class="px-6 py-8 max-w-7xl mx-auto">
-            <div class="grid grid-cols-5 gap-6">
+            <div class="grid grid-cols-6 gap-6">
                 <a href="<?php echo e(route('admin.dashboard')); ?>" class="flex items-center space-x-2 text-gray-700 hover:text-[#0C5587] pb-2 <?php echo e(request()->routeIs('admin.dashboard') ? 'border-b-2 border-[#0C5587] text-[#0C5587]' : ''); ?>">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -264,6 +289,23 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                     </svg>
                     <span>Barang</span>
+                </a>
+                <a href="<?php echo e(route('admin.notifikasi.index')); ?>" class="flex items-center space-x-2 text-gray-700 hover:text-[#0C5587] pb-2 <?php echo e(request()->routeIs('admin.notifikasi.*') ? 'border-b-2 border-[#0C5587] text-[#0C5587]' : ''); ?>">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                    </svg>
+                    <span class="relative">
+                        Notifikasi
+                        <?php
+                            $laporanPending = \App\Models\LaporanBarang::where('status', 'pending')->count();
+                        ?>
+                        <?php if($laporanPending > 0): ?>
+                        <span class="absolute -top-2 -right-6 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold animate-pulse shadow-lg">
+                            <?php echo e($laporanPending); ?>
+
+                        </span>
+                        <?php endif; ?>
+                    </span>
                 </a>
                 <a href="<?php echo e(route('admin.pegawai.index')); ?>" class="flex items-center space-x-2 text-gray-700 hover:text-[#0C5587] pb-2 <?php echo e(request()->routeIs('admin.pegawai.*') ? 'border-b-2 border-[#0C5587] text-[#0C5587]' : ''); ?>">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

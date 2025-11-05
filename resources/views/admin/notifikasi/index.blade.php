@@ -103,6 +103,7 @@
                                             </button>
                                         </form>
                                     @endif
+                                    
                                     @if($lap->status !== 'selesai')
                                         <form action="{{ route('admin.notifikasi.update-status', $lap->id) }}" method="POST">
                                             @csrf
@@ -111,7 +112,20 @@
                                                 Selesai
                                             </button>
                                         </form>
+                                    @else
+                                        <!-- Tombol untuk mengembalikan ke pending jika sudah selesai -->
+                                        <form action="{{ route('admin.notifikasi.update-status', $lap->id) }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="status" value="pending">
+                                            <button type="submit" class="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-xs font-medium transition-all flex items-center space-x-1" title="Kembalikan ke pending (barang expired lagi)">
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                                </svg>
+                                                <span>Reset</span>
+                                            </button>
+                                        </form>
                                     @endif
+                                    
                                     <a href="{{ route('admin.barang.edit', $lap->barang_id) }}" class="px-3 py-1 rounded-lg text-xs font-medium transition-all" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%); color: white;">
                                         Edit Barang
                                     </a>

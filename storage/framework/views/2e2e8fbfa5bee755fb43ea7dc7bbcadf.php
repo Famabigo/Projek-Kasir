@@ -6,37 +6,37 @@
     <div class="bg-white border-b">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center space-x-6 overflow-x-auto py-4">
-                <button class="flex flex-col items-center space-y-2 text-gray-600 hover:text-[#0C5587] min-w-max transition-colors">
-                    <div class="w-14 h-14 rounded-full flex items-center justify-center" style="background-color: #EDF7FC;">
+                <button onclick="filterByCategory('all')" class="category-btn active flex flex-col items-center space-y-2 min-w-max transition-colors" data-category="all">
+                    <div class="w-14 h-14 rounded-full flex items-center justify-center category-icon" style="background-color: #EDF7FC;">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
                         </svg>
                     </div>
                     <span class="text-xs font-medium">Semua</span>
                 </button>
-                <button class="flex flex-col items-center space-y-2 text-gray-600 hover:text-[#0C5587] min-w-max transition-colors">
-                    <div class="w-14 h-14 rounded-full flex items-center justify-center" style="background-color: #EDF7FC;">
+                <button onclick="filterByCategory('Makanan')" class="category-btn flex flex-col items-center space-y-2 min-w-max transition-colors" data-category="Makanan">
+                    <div class="w-14 h-14 rounded-full flex items-center justify-center category-icon" style="background-color: #EDF7FC;">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18M3 7h18M3 11h18m-7 4h7"/>
                         </svg>
                     </div>
                     <span class="text-xs font-medium">Makanan</span>
                 </button>
-                <button class="flex flex-col items-center space-y-2 text-gray-600 hover:text-[#0C5587] min-w-max transition-colors">
-                    <div class="w-14 h-14 rounded-full flex items-center justify-center" style="background-color: #EDF7FC;">
+                <button onclick="filterByCategory('Minuman')" class="category-btn flex flex-col items-center space-y-2 min-w-max transition-colors" data-category="Minuman">
+                    <div class="w-14 h-14 rounded-full flex items-center justify-center category-icon" style="background-color: #EDF7FC;">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
                         </svg>
                     </div>
                     <span class="text-xs font-medium">Minuman</span>
                 </button>
-                <button class="flex flex-col items-center space-y-2 text-gray-600 hover:text-[#0C5587] min-w-max transition-colors">
-                    <div class="w-14 h-14 rounded-full flex items-center justify-center" style="background-color: #EDF7FC;">
+                <button onclick="filterByCategory('Sembako')" class="category-btn flex flex-col items-center space-y-2 min-w-max transition-colors" data-category="Sembako">
+                    <div class="w-14 h-14 rounded-full flex items-center justify-center category-icon" style="background-color: #EDF7FC;">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                         </svg>
                     </div>
-                    <span class="text-xs font-medium">Lainnya</span>
+                    <span class="text-xs font-medium">Sembako</span>
                 </button>
             </div>
         </div>
@@ -71,6 +71,7 @@
             <?php $__currentLoopData = $barangs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $barang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="bg-white rounded-lg overflow-hidden hover:shadow-md transition-all duration-200 border-2 product-card cursor-pointer" 
                 id="card-<?php echo e($barang->id); ?>"
+                data-category="<?php echo e($barang->kategori ?? 'Lainnya'); ?>"
                 style="border-color: #e5e7eb;"
                 onclick="toggleCardSelection(<?php echo e($barang->id); ?>)">
                 
@@ -180,6 +181,123 @@
         </div>
         <?php endif; ?>
     </div>
+
+    <!-- Member Promotion Banner (Only for non-members) -->
+    <?php if(Auth::user()->member_status !== 'approved'): ?>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="bg-gradient-to-br from-[#0C5587] via-[#0884D1] to-[#C7E339] rounded-2xl overflow-hidden shadow-xl">
+            <div class="p-8 md:p-10">
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <!-- Left Content -->
+                    <div class="flex-1 text-white">
+                        <div class="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <span class="font-bold text-sm">PENAWARAN SPESIAL</span>
+                        </div>
+                        
+                        <h3 class="text-3xl md:text-4xl font-bold mb-3">
+                            Jadi Member Sekarang!
+                        </h3>
+                        <p class="text-lg text-blue-50 mb-6">
+                            Nikmati berbagai keuntungan eksklusif dengan bergabung menjadi member kami
+                        </p>
+
+                        <!-- Benefits List -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div class="flex items-start gap-3">
+                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-[#C7E339]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-white">Diskon Otomatis</p>
+                                    <p class="text-sm text-blue-50">Hemat hingga 15% setiap belanja</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-[#C7E339]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-white">Gratis Ongkir</p>
+                                    <p class="text-sm text-blue-50">Untuk metode ambil di tempat</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-[#C7E339]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-white">Promo Eksklusif</p>
+                                    <p class="text-sm text-blue-50">Akses penawaran khusus member</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-[#C7E339]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-white">Prioritas Layanan</p>
+                                    <p class="text-sm text-blue-50">Pelayanan lebih cepat & prioritas</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <?php if(Auth::user()->member_status === 'none'): ?>
+                            <a href="<?php echo e(route('pembeli.member-request.index')); ?>" 
+                               class="inline-flex items-center px-8 py-4 bg-white hover:bg-gray-50 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                               style="color: #0C5587;">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                                </svg>
+                                Daftar Member Sekarang
+                            </a>
+                        <?php elseif(Auth::user()->member_status === 'pending'): ?>
+                            <div class="inline-flex items-center px-8 py-4 bg-yellow-400 text-gray-800 rounded-xl font-bold">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Pendaftaran Sedang Diproses
+                            </div>
+                        <?php elseif(Auth::user()->member_status === 'rejected'): ?>
+                            <a href="<?php echo e(route('pembeli.member-request.index')); ?>" 
+                               class="inline-flex items-center px-8 py-4 bg-white hover:bg-gray-50 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl"
+                               style="color: #0C5587;">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                                </svg>
+                                Daftar Menjadi Member
+                            </a>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Right Illustration -->
+                    <div class="flex-shrink-0">
+                        <div class="relative">
+                            <div class="w-48 h-48 md:w-64 md:h-64 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                                <svg class="w-32 h-32 md:w-40 md:h-40 text-white opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
 </div>
 
 <style>
@@ -187,10 +305,67 @@
         border-color: #0C5587 !important;
         box-shadow: 0 4px 12px rgba(12, 85, 135, 0.15);
     }
+    
+    .category-btn {
+        color: #6B7280;
+    }
+    
+    .category-btn.active {
+        color: #0C5587;
+    }
+    
+    .category-btn.active .category-icon {
+        background-color: #0C5587 !important;
+    }
+    
+    .category-btn.active svg {
+        color: white;
+    }
+    
+    .product-card {
+        transition: all 0.3s ease;
+    }
+    
+    .product-card.hidden {
+        display: none;
+    }
 </style>
 
 <script>
     let selectedProducts = new Map();
+    let currentCategory = 'all';
+
+    // Category filter function
+    function filterByCategory(category) {
+        currentCategory = category;
+        
+        // Update active button
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`[data-category="${category}"]`).classList.add('active');
+        
+        // Filter products
+        const productCards = document.querySelectorAll('.product-card');
+        let visibleCount = 0;
+        
+        productCards.forEach(card => {
+            const productCategory = card.getAttribute('data-category');
+            
+            if (category === 'all' || productCategory === category) {
+                card.classList.remove('hidden');
+                visibleCount++;
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+        
+        // Update product count
+        const countElement = document.querySelector('.flex.items-center.justify-between.mb-4 .text-gray-500');
+        if (countElement) {
+            countElement.textContent = `${visibleCount} produk`;
+        }
+    }
 
     function toggleCardSelection(productId) {
         if (!document.getElementById(`qty-${productId}`)) return; // stok habis

@@ -20,7 +20,7 @@
                         </svg>
                     </div>
                 </div>
-                <div class="text-3xl font-bold mb-1 text-gray-900"><?php echo e($transaksiHariIni); ?></div>
+                <div class="text-2xl font-bold mb-1 text-gray-900"><?php echo e($transaksiHariIni); ?></div>
                 <div class="text-gray-600 text-sm">Transaksi Hari Ini</div>
             </div>
 
@@ -33,7 +33,7 @@
                         </svg>
                     </div>
                 </div>
-                <div class="text-3xl font-bold mb-1 text-gray-900">Rp <?php echo e(number_format($omsetHariIni, 0, ',', '.')); ?></div>
+                <div class="text-2xl font-bold mb-1 text-gray-900">Rp <?php echo e(number_format($omsetHariIni, 0, ',', '.')); ?></div>
                 <div class="text-gray-600 text-sm">Pendapatan Hari Ini</div>
             </div>
 
@@ -46,7 +46,7 @@
                         </svg>
                     </div>
                 </div>
-                <div class="text-3xl font-bold mb-1 text-gray-900">Rp <?php echo e(number_format($keuntunganHariIni, 0, ',', '.')); ?></div>
+                <div class="text-2xl font-bold mb-1 text-gray-900">Rp <?php echo e(number_format($keuntunganHariIni, 0, ',', '.')); ?></div>
                 <div class="text-gray-600 text-sm">Keuntungan Hari Ini</div>
             </div>
 
@@ -59,18 +59,19 @@
                         </svg>
                     </div>
                 </div>
-                <div class="text-3xl font-bold mb-1 text-gray-900">Rp <?php echo e(number_format($omsetBulanIni, 0, ',', '.')); ?></div>
+                <div class="text-2xl font-bold mb-1 text-gray-900">Rp <?php echo e(number_format($omsetBulanIni, 0, ',', '.')); ?></div>
                 <div class="text-gray-600 text-sm">Pendapatan Bulan Ini</div>
             </div>
         </div>
         
         <!-- Info Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow relative overflow-hidden">
+                <div class="absolute left-0 top-0 bottom-0 w-1.5" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);"></div>
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-600 text-sm mb-1">Total Barang</p>
-                        <p class="text-3xl font-bold text-gray-900"><?php echo e($totalBarang); ?></p>
+                        <p class="text-2xl font-bold text-gray-900"><?php echo e($totalBarang); ?></p>
                     </div>
                     <div class="rounded-lg p-3" style="background-color: #EDF7FC;">
                         <svg class="w-8 h-8" style="color: #0C5587;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -79,11 +80,12 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow relative overflow-hidden">
+                <div class="absolute left-0 top-0 bottom-0 w-1.5" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);"></div>
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-600 text-sm mb-1">Total Pegawai</p>
-                        <p class="text-3xl font-bold text-gray-900"><?php echo e($totalPegawai); ?></p>
+                        <p class="text-2xl font-bold text-gray-900"><?php echo e($totalPegawai); ?></p>
                     </div>
                     <div class="rounded-lg p-3" style="background-color: #EDF7FC;">
                         <svg class="w-8 h-8" style="color: #0C5587;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,11 +94,12 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow relative overflow-hidden">
+                <div class="absolute left-0 top-0 bottom-0 w-1.5" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);"></div>
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-600 text-sm mb-1">Total Member</p>
-                        <p class="text-3xl font-bold text-gray-900"><?php echo e($totalMember); ?></p>
+                        <p class="text-2xl font-bold text-gray-900"><?php echo e($totalMember); ?></p>
                     </div>
                     <div class="rounded-lg p-3" style="background-color: #EDF7FC;">
                         <svg class="w-8 h-8" style="color: #0C5587;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -163,9 +166,9 @@
         </div>
         
         <!-- Transaksi Terbaru -->
-        <div class="card-hover bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="font-bold text-xl text-gray-800">Transaksi Terbaru</h3>
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-lg text-gray-900">Transaksi Terbaru</h3>
                 <a href="<?php echo e(route('admin.laporan.index')); ?>" class="text-sm font-medium flex items-center" style="color: #0C5587;" onmouseover="this.style.color='#0884D1'" onmouseout="this.style.color='#0C5587'">
                     Lihat Semua
                     <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

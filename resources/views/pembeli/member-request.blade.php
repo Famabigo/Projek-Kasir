@@ -18,14 +18,18 @@
                         <p class="text-gray-600">Anda belum mendaftar sebagai member</p>
                     @elseif($user->member_status === 'pending')
                         <p class="text-yellow-600">⏳ Permohonan Anda sedang diproses</p>
-                        <p class="text-sm text-gray-500 mt-1">Diajukan pada: {{ $user->member_request_at->format('d M Y H:i') }}</p>
+                        @if($user->member_request_at)
+                            <p class="text-sm text-gray-500 mt-1">Diajukan pada: {{ $user->member_request_at->format('d M Y H:i') }}</p>
+                        @endif
                     @elseif($user->member_status === 'approved')
                         <p class="text-green-600">✓ Anda adalah member aktif</p>
                         <div class="mt-2">
                             <span class="text-sm text-gray-600">Kode Member: </span>
                             <span class="font-bold text-primary">{{ $user->kode_member }}</span>
                         </div>
-                        <p class="text-sm text-gray-500 mt-1">Disetujui pada: {{ $user->member_approved_at->format('d M Y') }}</p>
+                        @if($user->member_approved_at)
+                            <p class="text-sm text-gray-500 mt-1">Disetujui pada: {{ $user->member_approved_at->format('d M Y') }}</p>
+                        @endif
                     @elseif($user->member_status === 'rejected')
                         <p class="text-red-600">✗ Permohonan ditolak</p>
                         @if($user->reject_reason)

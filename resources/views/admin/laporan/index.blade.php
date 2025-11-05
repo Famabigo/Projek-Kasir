@@ -103,16 +103,16 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-                        @forelse($transaksi as $t)
+                        @forelse($transaksi as $index => $t)
                         <tr class="hover:bg-blue-50 transition-colors">
                             <td class="px-6 py-4">
-                                <span class="font-semibold" style="color: #0C5587;">#{{ $t->id }}</span>
+                                <span class="font-semibold" style="color: #0C5587;">#{{ $transaksi->firstItem() + $index }}</span>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-700">{{ $t->created_at->format('d M Y H:i') }}</td>
                             <td class="px-6 py-4 text-sm text-gray-700">{{ $t->kasir->name ?? '-' }}</td>
                             <td class="px-6 py-4 text-sm">
                                 @if($t->member)
-                                <span class="px-2 py-1 rounded text-xs font-medium text-white" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">{{ $t->member->nama_member }}</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium text-white" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">{{ $t->member->name }}</span>
                                 @else
                                 <span class="text-gray-400">-</span>
                                 @endif

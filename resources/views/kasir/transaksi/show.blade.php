@@ -5,7 +5,7 @@
     <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">Detail Transaksi #{{ $transaksi->id }}</h2>
+                <h2 class="text-2xl font-bold">Detail Transaksi</h2>
                 <a href="{{ route('kasir.transaksi.cetak-struk', $transaksi) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
                     📄 Cetak Struk
                 </a>
@@ -23,7 +23,7 @@
                 @if($transaksi->member)
                 <div>
                     <p class="text-sm text-gray-600">Member</p>
-                    <p class="font-semibold">{{ $transaksi->member->nama_member }} ({{ $transaksi->member->kode_member }})</p>
+                    <p class="font-semibold">{{ $transaksi->member->name }} ({{ $transaksi->member->kode_member }})</p>
                 </div>
                 @endif
                 @if($transaksi->metode_pembayaran)
@@ -75,8 +75,23 @@
                 </div>
             </div>
             
-            <div class="mt-6">
-                <a href="{{ route('kasir.transaksi.index') }}" class="text-blue-600 hover:text-blue-800">← Kembali ke Daftar Transaksi</a>
+            <div class="mt-6 flex gap-3">
+                <a href="{{ route('kasir.transaksi.create') }}" 
+                   class="flex-1 inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-white transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                   style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Transaksi Baru
+                </a>
+                <a href="{{ route('kasir.transaksi.index') }}" 
+                   class="flex-1 inline-flex items-center justify-center px-6 py-3 border-2 rounded-lg font-semibold transition-all duration-200 hover:shadow-md"
+                   style="border-color: #0C5587; color: #0C5587;">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    Daftar Transaksi
+                </a>
             </div>
         </div>
     </div>

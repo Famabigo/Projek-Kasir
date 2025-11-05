@@ -11,46 +11,96 @@ use App\Models\Pesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class TransaksiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Get pesanan from pembeli (online orders)
-        $pesanan = Pesanan::with(['user', 'details.barang'])
+        $filter = $request->get('filter', 'all'); // all, online, offline
+        
+        // Get online orders (pesanan)
+        $pesananQuery = Pesanan::with(['user', 'details.barang'])
             ->whereIn('status', ['menunggu', 'diproses', 'siap_diambil', 'selesai'])
-            ->latest()
-            ->paginate(20);
+            ->latest();
+        
+        // Get offline transactions
+        $transaksiQuery = Transaksi::with(['kasir', 'member', 'detail.barang'])
+            ->latest();
+        
+        if ($filter === 'online') {
+            $pesanan = $pesananQuery->paginate(20);
+            $transaksi = collect(); // Empty collection
+        } elseif ($filter === 'offline') {
+            $pesanan = collect(); // Empty collection
+            $transaksi = $transaksiQuery->paginate(20);
+        } else {
+            // Show both
+            $pesanan = $pesananQuery->get();
+            $transaksi = $transaksiQuery->get();
+        }
             
-        return view('kasir.transaksi.index', compact('pesanan'));
+        return view('kasir.transaksi.index', compact('pesanan', 'transaksi', 'filter'));
     }
 
     public function create()
     {
         $barang = Barang::where('stok','>',0)->get();
-        $members = Member::all();
+        // Get approved members from users table
+        $members = \App\Models\User::where('role', 'pembeli')
+            ->where('member_status', 'approved')
+            ->orderBy('name')
+            ->get();
         return view('kasir.transaksi.create', compact('barang','members'));
     }
 
     public function store(Request $request)
     {
+        // Debug: Log RAW request data BEFORE any processing
+        Log::info('=== TRANSAKSI STORE DEBUG ===');
+        Log::info('RAW POST data:', ['data' => $_POST]);
+        Log::info('Request all:', ['data' => $request->all()]);
+        Log::info('Request input member_id:', ['value' => $request->input('member_id'), 'type' => gettype($request->input('member_id'))]);
+        Log::info('Request has member_id:', ['has' => $request->has('member_id')]);
+        Log::info('Request filled member_id:', ['filled' => $request->filled('member_id')]);
+        
+        // Clean empty string to null for member_id
+        if ($request->has('member_id') && $request->input('member_id') === '') {
+            Log::info('Converting empty string member_id to null');
+            $request->merge(['member_id' => null]);
+        }
+        
         $data = $request->validate([
-            'member_id' => 'nullable|exists:members,id',
-            'items' => 'required|array',
+            'member_id' => 'nullable|exists:users,id',
+            'items' => 'required|array|min:1',
             'items.*.barang_id' => 'required|exists:barang,id',
             'items.*.jumlah' => 'required|integer|min:1',
-            'diskon' => 'nullable|numeric',
-            'metode_pembayaran' => 'nullable|string',
+            'items.*.harga_beli' => 'required|numeric',
+            'items.*.harga_jual' => 'required|numeric',
+            'diskon' => 'nullable|numeric|min:0',
         ]);
+        
+        Log::info('After validation - member_id:', ['member_id' => $data['member_id'] ?? 'NULL']);
 
         DB::beginTransaction();
         try {
             $total = 0;
             $totalKeuntungan = 0;
             
+            // Validasi stok dan hitung total
             foreach ($data['items'] as $it) {
+                if (!isset($it['jumlah']) || $it['jumlah'] < 1) {
+                    continue; // Skip item tanpa jumlah
+                }
+                
                 $b = Barang::find($it['barang_id']);
+                
+                // Cek stok
+                if ($b->stok < $it['jumlah']) {
+                    throw new \Exception("Stok {$b->nama_barang} tidak mencukupi. Tersedia: {$b->stok}");
+                }
+                
                 $subtotal = $b->harga_jual * $it['jumlah'];
                 $total += $subtotal;
                 
@@ -59,19 +109,38 @@ class TransaksiController extends Controller
                 $totalKeuntungan += $keuntunganItem;
             }
 
-            $diskon = $data['diskon'] ?? 0;
-            $totalSetelahDiskon = $total - $diskon;
+            // Hitung diskon
+            $diskonManual = $data['diskon'] ?? 0;
+            $diskonMember = 0;
+            $member = null;
+            
+            if (!empty($data['member_id'])) {
+                $member = \App\Models\User::find($data['member_id']);
+                // Diskon member hanya berlaku jika total belanja >= 50.000
+                if ($member && $member->diskon_member > 0 && $total >= 50000) {
+                    $diskonMember = $total * ($member->diskon_member / 100);
+                }
+            }
+            
+            $totalDiskon = $diskonManual + $diskonMember;
+            $totalSetelahDiskon = max(0, $total - $totalDiskon);
 
+            // Buat transaksi
             $transaksi = Transaksi::create([
                 'kasir_id' => Auth::id(),
                 'member_id' => $data['member_id'] ?? null,
                 'total_harga' => $totalSetelahDiskon,
-                'diskon' => $diskon,
+                'diskon' => $totalDiskon,
                 'keuntungan' => $totalKeuntungan,
-                'metode_pembayaran' => $data['metode_pembayaran'] ?? null,
+                'metode_pembayaran' => 'Cash', // Default cash untuk transaksi offline
             ]);
 
+            // Simpan detail transaksi
             foreach ($data['items'] as $it) {
+                if (!isset($it['jumlah']) || $it['jumlah'] < 1) {
+                    continue; // Skip item tanpa jumlah
+                }
+                
                 $b = Barang::find($it['barang_id']);
                 $jumlah = $it['jumlah'];
                 $subtotal = $b->harga_jual * $jumlah;
@@ -86,12 +155,15 @@ class TransaksiController extends Controller
                     'subtotal' => $subtotal,
                 ]);
 
-                // update stok
+                // Update stok
                 $b->decrement('stok', $jumlah);
             }
 
             DB::commit();
-            return redirect()->route('kasir.transaksi.index')->with('success', 'Transaksi berhasil disimpan.');
+            
+            return redirect()->route('kasir.transaksi.show', $transaksi->id)
+                ->with('success', 'Transaksi berhasil disimpan!');
+                
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => $e->getMessage()])->withInput();

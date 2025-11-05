@@ -34,8 +34,12 @@
                             @foreach($pendingMembers as $member)
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="py-3 px-4 text-sm text-gray-600">
-                                        {{ $member->member_request_at->format('d M Y') }}<br>
-                                        <span class="text-xs text-gray-500">{{ $member->member_request_at->format('H:i') }}</span>
+                                        @if($member->member_request_at)
+                                            {{ $member->member_request_at->format('d M Y') }}<br>
+                                            <span class="text-xs text-gray-500">{{ $member->member_request_at->format('H:i') }}</span>
+                                        @else
+                                            <span class="text-gray-400">-</span>
+                                        @endif
                                     </td>
                                     <td class="py-3 px-4">
                                         <div class="font-semibold text-gray-800">{{ $member->name }}</div>
@@ -120,7 +124,11 @@
                                     <td class="py-3 px-4 text-sm text-gray-600">{{ $member->email }}</td>
                                     <td class="py-3 px-4 text-sm text-gray-600">{{ $member->no_hp }}</td>
                                     <td class="py-3 px-4 text-sm text-gray-600">
-                                        {{ $member->member_approved_at->format('d M Y') }}
+                                        @if($member->member_approved_at)
+                                            {{ $member->member_approved_at->format('d M Y') }}
+                                        @else
+                                            <span class="text-gray-400">-</span>
+                                        @endif
                                     </td>
                                     <td class="py-3 px-4 text-sm text-gray-600">
                                         {{ $member->approvedBy ? $member->approvedBy->name : '-' }}

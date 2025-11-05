@@ -77,7 +77,7 @@
 <body>
     <div class="header">
         <h2>LAPORAN PENJUALAN</h2>
-        <p><strong>Market Kasir</strong></p>
+        <p><strong>ShopEase Kasir</strong></p>
         <p>Periode: {{ \Carbon\Carbon::parse($tanggalMulai)->format('d M Y') }} - {{ \Carbon\Carbon::parse($tanggalAkhir)->format('d M Y') }}</p>
     </div>
     
@@ -100,12 +100,12 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($transaksi as $t)
+            @foreach($transaksi as $index => $t)
             <tr>
-                <td><strong style="color: #0C5587;">#{{ $t->id }}</strong></td>
+                <td><strong style="color: #0C5587;">#{{ $index + 1 }}</strong></td>
                 <td>{{ $t->created_at->format('d M Y H:i') }}</td>
                 <td>{{ $t->kasir->name ?? '-' }}</td>
-                <td>{{ $t->member->nama_member ?? '-' }}</td>
+                <td>{{ $t->member->name ?? '-' }}</td>
                 <td class="text-right"><strong>Rp {{ number_format($t->total_harga, 0, ',', '.') }}</strong></td>
                 <td class="text-right">Rp {{ number_format($t->diskon, 0, ',', '.') }}</td>
                 <td class="text-right" style="color: #0C5587;"><strong>Rp {{ number_format($t->keuntungan, 0, ',', '.') }}</strong></td>

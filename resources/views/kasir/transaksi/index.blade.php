@@ -1,32 +1,160 @@
 @extends('layouts.app')
-@section('title','Transaksi')
+@section('title','Riwayat Transaksi')
 @section('content')
 <div class="py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="flex items-center justify-between mb-8">
             <div>
-                <h2 class="text-3xl font-bold" style="color: #0C5587;">Pesanan Pembeli</h2>
-                <p class="text-gray-600 mt-2">Daftar pesanan dari pembeli online</p>
+                <h2 class="text-3xl font-bold" style="color: #0C5587;">Riwayat Transaksi</h2>
+                <p class="text-gray-600 mt-2">Semua transaksi online dan offline</p>
+            </div>
+            <a href="{{ route('kasir.transaksi.create') }}" 
+               class="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+               style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Transaksi Baru
+            </a>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="mb-6">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-2 inline-flex gap-2">
+                <a href="{{ route('kasir.transaksi.index', ['filter' => 'all']) }}" 
+                   class="px-6 py-2 rounded-md font-medium transition-all duration-200 {{ $filter === 'all' ? 'text-white shadow-md' : 'text-gray-600 hover:bg-gray-100' }}"
+                   style="{{ $filter === 'all' ? 'background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);' : '' }}">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                        </svg>
+                        Semua
+                    </span>
+                </a>
+                <a href="{{ route('kasir.transaksi.index', ['filter' => 'online']) }}" 
+                   class="px-6 py-2 rounded-md font-medium transition-all duration-200 {{ $filter === 'online' ? 'text-white shadow-md' : 'text-gray-600 hover:bg-gray-100' }}"
+                   style="{{ $filter === 'online' ? 'background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);' : '' }}">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                        </svg>
+                        Pesanan Online
+                    </span>
+                </a>
+                <a href="{{ route('kasir.transaksi.index', ['filter' => 'offline']) }}" 
+                   class="px-6 py-2 rounded-md font-medium transition-all duration-200 {{ $filter === 'offline' ? 'text-white shadow-md' : 'text-gray-600 hover:bg-gray-100' }}"
+                   style="{{ $filter === 'offline' ? 'background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);' : '' }}">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        Pembelian Offline
+                    </span>
+                </a>
             </div>
         </div>
 
-        <!-- Card Table -->
-        <div class="card-hover bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="min-w-full">
-                    <thead>
-                        <tr class="border-b border-gray-200" style="background: linear-gradient(135deg, #EDF7FC 0%, #B1D7F2 100%);">
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Kode Pesanan</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Detail</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Total</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Waktu Pesan</th>
-                            <th class="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        @forelse($pesanan as $p)
+        <!-- Transaksi Offline -->
+        @if($filter === 'all' || $filter === 'offline')
+        @if($transaksi->count() > 0)
+        <div class="mb-8">
+            <h3 class="text-xl font-semibold mb-4" style="color: #0C5587;">
+                <svg class="w-6 h-6 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                Pembelian Offline ({{ $transaksi->count() }})
+            </h3>
+            <div class="card-hover bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr class="border-b border-gray-200" style="background: linear-gradient(135deg, #EDF7FC 0%, #B1D7F2 100%);">
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">ID</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Waktu</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Kasir</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Member</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Total</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Diskon</th>
+                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            @foreach($transaksi as $index => $t)
+                            <tr class="hover:bg-blue-50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <span class="font-bold text-lg" style="color: #0C5587;">#{{ $index + 1 }}</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-700">
+                                    {{ $t->created_at->format('d M Y') }}<br>
+                                    <span class="text-xs text-gray-500">{{ $t->created_at->format('H:i') }}</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-700">{{ $t->kasir->name ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm">
+                                    @if($t->member)
+                                    <span class="px-2 py-1 rounded text-xs font-medium text-white" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">
+                                        {{ $t->member->name }}
+                                    </span>
+                                    @else
+                                    <span class="text-gray-400">Non-Member</span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="font-bold text-green-600">Rp {{ number_format($t->total_harga, 0, ',', '.') }}</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm">
+                                    @if($t->diskon > 0)
+                                    <span class="text-red-600">- Rp {{ number_format($t->diskon, 0, ',', '.') }}</span>
+                                    @else
+                                    <span class="text-gray-400">-</span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <a href="{{ route('kasir.transaksi.show', $t->id) }}" 
+                                       class="inline-flex items-center px-4 py-2 rounded-lg font-medium text-white transition-all duration-200 hover:shadow-md"
+                                       style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                        </svg>
+                                        Detail
+                                    </a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        @endif
+        @endif
+
+        <!-- Pesanan Online -->
+        @if($filter === 'all' || $filter === 'online')
+        @if($pesanan->count() > 0)
+        <div>
+            <h3 class="text-xl font-semibold mb-4" style="color: #0C5587;">
+                <svg class="w-6 h-6 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                </svg>
+                Pesanan Online ({{ $pesanan->count() }})
+            </h3>
+            <div class="card-hover bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr class="border-b border-gray-200" style="background: linear-gradient(135deg, #EDF7FC 0%, #B1D7F2 100%);">
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Kode Pesanan</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Detail</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Total</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Waktu Pesan</th>
+                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            @foreach($pesanan as $p)
                         <tr class="hover:bg-blue-50 transition-colors">
                             <td class="px-6 py-4">
                                 <div>
@@ -81,25 +209,62 @@
                                 </div>
                             </td>
                         </tr>
-                        @empty
-                        <tr>
-                            <td colspan="6" class="px-6 py-8 text-center text-gray-500">
-                                <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                                </svg>
-                                <p class="text-lg font-medium">Belum ada pesanan</p>
-                            </td>
-                        </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>
-            
-            <!-- Pagination -->
-            <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
-                {{ $pesanan->links() }}
-            </div>
         </div>
+        @endif
+        @endif
+
+        <!-- Empty State untuk All -->
+        @if($filter === 'all' && $pesanan->count() === 0 && $transaksi->count() === 0)
+        <div class="card-hover bg-white rounded-xl shadow-lg border border-gray-100 p-12 text-center">
+            <svg class="w-24 h-24 mx-auto mb-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            <p class="text-xl font-semibold text-gray-600 mb-2">Belum Ada Transaksi</p>
+            <p class="text-gray-500 mb-6">Mulai buat transaksi baru untuk pembeli</p>
+            <a href="{{ route('kasir.transaksi.create') }}" 
+               class="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+               style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Transaksi Baru
+            </a>
+        </div>
+        @endif
+
+        <!-- Empty State untuk Online -->
+        @if($filter === 'online' && $pesanan->count() === 0)
+        <div class="card-hover bg-white rounded-xl shadow-lg border border-gray-100 p-12 text-center">
+            <svg class="w-24 h-24 mx-auto mb-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+            </svg>
+            <p class="text-xl font-semibold text-gray-600 mb-2">Belum Ada Pesanan Online</p>
+            <p class="text-gray-500">Pesanan dari pembeli akan muncul di sini</p>
+        </div>
+        @endif
+
+        <!-- Empty State untuk Offline -->
+        @if($filter === 'offline' && $transaksi->count() === 0)
+        <div class="card-hover bg-white rounded-xl shadow-lg border border-gray-100 p-12 text-center">
+            <svg class="w-24 h-24 mx-auto mb-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            <p class="text-xl font-semibold text-gray-600 mb-2">Belum Ada Transaksi Offline</p>
+            <p class="text-gray-500 mb-6">Mulai buat transaksi baru untuk pembeli offline</p>
+            <a href="{{ route('kasir.transaksi.create') }}" 
+               class="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+               style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Transaksi Baru
+            </a>
+        </div>
+        @endif
     </div>
 </div>
 

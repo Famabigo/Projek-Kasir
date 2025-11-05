@@ -1,4 +1,4 @@
-Market - Sistem Manajemen Penjualan
+ShopEase - Sistem Manajemen Penjualan
 ====================================
 
 ## Status: ✅ Siap Digunakan

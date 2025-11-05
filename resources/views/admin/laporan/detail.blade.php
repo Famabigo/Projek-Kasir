@@ -37,7 +37,7 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600">Member:</span>
-                        <span class="font-semibold">{{ $transaksi->member->nama_member ?? 'Non-Member' }}</span>
+                        <span class="font-semibold">{{ $transaksi->member->name ?? 'Non-Member' }}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600">Metode Pembayaran:</span>

@@ -66,7 +66,8 @@
         
         <!-- Info Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow relative overflow-hidden">
+                <div class="absolute left-0 top-0 bottom-0 w-1.5" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);"></div>
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-600 text-sm mb-1">Total Barang</p>
@@ -79,7 +80,8 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow relative overflow-hidden">
+                <div class="absolute left-0 top-0 bottom-0 w-1.5" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);"></div>
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-600 text-sm mb-1">Total Pegawai</p>
@@ -92,7 +94,8 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow relative overflow-hidden">
+                <div class="absolute left-0 top-0 bottom-0 w-1.5" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);"></div>
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-600 text-sm mb-1">Total Member</p>

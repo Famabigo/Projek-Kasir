@@ -19,7 +19,7 @@
 </head>
 <body>
     <div class="header">
-        <h2>MARKET</h2>
+        <h2>SHOPEASE</h2>
         <p>Sistem Manajemen Penjualan</p>
         <p>Terima Kasih Atas Kunjungan Anda</p>
     </div>
@@ -71,7 +71,7 @@
     
     <div class="footer">
         <p>*** Barang yang sudah dibeli tidak dapat dikembalikan ***</p>
-        <p>Hubungi kami: market@example.com</p>
+        <p>Hubungi kami: shopease@example.com</p>
     </div>
 </body>
 </html>

@@ -46,6 +46,7 @@ class MemberController extends Controller
         $data['member_status'] = 'approved';
         $data['member_approved_at'] = now();
         $data['approved_by'] = auth()->id();
+        $data['diskon_member'] = 15; // Auto set 15% discount for new members
         
         // Generate kode member
         $data['kode_member'] = User::generateKodeMember();

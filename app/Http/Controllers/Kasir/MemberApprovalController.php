@@ -37,7 +37,8 @@ class MemberApprovalController extends Controller
             'kode_member' => User::generateKodeMember(),
             'member_approved_at' => now(),
             'approved_by' => Auth::id(),
-            'reject_reason' => null
+            'reject_reason' => null,
+            'diskon_member' => 15 // Auto set 15% discount for approved members
         ]);
 
         return back()->with('success', "Member {$user->name} berhasil disetujui dengan kode: {$user->kode_member}. Member akan otomatis mendapat diskon 15% untuk belanja minimal Rp 50.000");
