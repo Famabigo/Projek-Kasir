@@ -94,6 +94,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
         // Laporan routes
         Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
         Route::get('/laporan/{id}/detail', [LaporanController::class, 'detail'])->name('laporan.detail');
+        Route::get('/laporan/pesanan/{id}/detail', [LaporanController::class, 'detailPesanan'])->name('laporan.detail-pesanan');
         Route::get('/laporan/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.pdf');
         Route::get('/laporan/excel', [LaporanController::class, 'exportExcel'])->name('laporan.excel');
         
@@ -133,6 +134,13 @@ Route::middleware(['auth', 'verified'])->group(function(){
         // Laporan Barang routes
         Route::get('/laporan-barang', [\App\Http\Controllers\Kasir\LaporanBarangController::class, 'index'])->name('laporan-barang.index');
         Route::post('/laporan-barang', [\App\Http\Controllers\Kasir\LaporanBarangController::class, 'store'])->name('laporan-barang.store');
+        
+        // Laporan Penjualan routes
+        Route::get('/laporan', [\App\Http\Controllers\Kasir\LaporanController::class, 'index'])->name('laporan.index');
+        Route::get('/laporan/{id}/detail', [\App\Http\Controllers\Kasir\LaporanController::class, 'detail'])->name('laporan.detail');
+        Route::get('/laporan/pesanan/{id}/detail', [\App\Http\Controllers\Kasir\LaporanController::class, 'detailPesanan'])->name('laporan.detail-pesanan');
+        Route::get('/laporan/pdf', [\App\Http\Controllers\Kasir\LaporanController::class, 'exportPdf'])->name('laporan.pdf');
+        Route::get('/laporan/excel', [\App\Http\Controllers\Kasir\LaporanController::class, 'exportExcel'])->name('laporan.excel');
     });
 
     // Pembeli routes

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Kasir;
 
 use App\Http\Controllers\Controller;
 use App\Models\Transaksi;
 use App\Models\TransaksiDetail;
 use App\Models\Pesanan;
+use App\Models\User;
 use App\Models\Barang;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -113,7 +114,7 @@ class LaporanController extends Controller
         // Get barang for filter dropdown
         $barang = Barang::orderBy('nama_barang')->get();
         
-        return view('admin.laporan.index', compact(
+        return view('kasir.laporan.index', compact(
             'transaksi',
             'tanggalMulai',
             'tanggalAkhir',
@@ -203,13 +204,7 @@ class LaporanController extends Controller
             }
         }
         
-        // Get barang name if filtered
-        $barang = null;
-        if ($barangId) {
-            $barang = Barang::find($barangId);
-        }
-        
-        $pdf = Pdf::loadView('admin.laporan.pdf', compact(
+        $pdf = Pdf::loadView('kasir.laporan.pdf', compact(
             'transaksi',
             'tanggalMulai',
             'tanggalAkhir',
@@ -217,7 +212,7 @@ class LaporanController extends Controller
             'totalKeuntungan',
             'filterPembeli',
             'filterMetode',
-            'barang'
+            'barangId'
         ));
         
         return $pdf->download('laporan-penjualan-' . now()->format('Y-m-d') . '.pdf');
@@ -241,13 +236,13 @@ class LaporanController extends Controller
     {
         $transaksi = Transaksi::with(['kasir', 'member', 'detail.barang'])->findOrFail($id);
         
-        return view('admin.laporan.detail', compact('transaksi'));
+        return view('kasir.laporan.detail', compact('transaksi'));
     }
     
     public function detailPesanan($id)
     {
         $pesanan = Pesanan::with(['user', 'kasir', 'details.barang'])->findOrFail($id);
         
-        return view('admin.laporan.detail-pesanan', compact('pesanan'));
+        return view('kasir.laporan.detail-pesanan', compact('pesanan'));
     }
 }

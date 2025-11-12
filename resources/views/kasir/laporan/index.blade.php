@@ -11,7 +11,7 @@
 
         <!-- Filter Card -->
         <div class="card-hover bg-white rounded-xl shadow-lg border border-gray-100 p-6 mb-6">
-            <form method="GET" action="{{ route('admin.laporan.index') }}">
+            <form method="GET" action="{{ route('kasir.laporan.index') }}">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Mulai</label>
@@ -54,19 +54,19 @@
                         </svg>
                         <span>Filter</span>
                     </button>
-                    <a href="{{ route('admin.laporan.pdf', ['tanggal_mulai' => $tanggalMulai, 'tanggal_akhir' => $tanggalAkhir, 'filter_pembeli' => $filterPembeli, 'filter_metode' => $filterMetode ?? 'all', 'barang_id' => $barangId]) }}" class="px-6 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2 bg-red-500 hover:bg-red-600 text-white">
+                    <a href="{{ route('kasir.laporan.pdf', ['tanggal_mulai' => $tanggalMulai, 'tanggal_akhir' => $tanggalAkhir, 'filter_pembeli' => $filterPembeli, 'filter_metode' => $filterMetode ?? 'all', 'barang_id' => $barangId]) }}" class="px-6 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2 bg-red-500 hover:bg-red-600 text-white">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
                         <span>Cetak PDF</span>
                     </a>
-                    <a href="{{ route('admin.laporan.excel', ['tanggal_mulai' => $tanggalMulai, 'tanggal_akhir' => $tanggalAkhir, 'filter_pembeli' => $filterPembeli, 'filter_metode' => $filterMetode ?? 'all', 'barang_id' => $barangId]) }}" class="px-6 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2 bg-green-500 hover:bg-green-600 text-white">
+                    <a href="{{ route('kasir.laporan.excel', ['tanggal_mulai' => $tanggalMulai, 'tanggal_akhir' => $tanggalAkhir, 'filter_pembeli' => $filterPembeli, 'filter_metode' => $filterMetode ?? 'all', 'barang_id' => $barangId]) }}" class="px-6 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2 bg-green-500 hover:bg-green-600 text-white">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
                         <span>Cetak Excel</span>
                     </a>
-                    <a href="{{ route('admin.laporan.index') }}" class="px-6 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2 bg-gray-200 hover:bg-gray-300 text-gray-700">
+                    <a href="{{ route('kasir.laporan.index') }}" class="px-6 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2 bg-gray-200 hover:bg-gray-300 text-gray-700">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                         </svg>
@@ -194,7 +194,7 @@
                             </td>
                             <td class="px-6 py-4 text-center">
                                 @if($isPesanan)
-                                    <a href="{{ route('admin.laporan.detail-pesanan', $item->id) }}" class="text-green-600 hover:text-green-800 font-medium text-sm flex items-center justify-center space-x-1">
+                                    <a href="{{ route('kasir.laporan.detail-pesanan', $item->id) }}" class="text-green-600 hover:text-green-800 font-medium text-sm flex items-center justify-center space-x-1">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -202,7 +202,7 @@
                                         <span>Detail</span>
                                     </a>
                                 @else
-                                    <a href="{{ route('admin.laporan.detail', $item->id) }}" class="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center justify-center space-x-1">
+                                    <a href="{{ route('kasir.laporan.detail', $item->id) }}" class="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center justify-center space-x-1">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -230,9 +230,9 @@
             <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
                 {{ $transaksi->appends([
                     'tanggal_mulai' => $tanggalMulai, 
-                    'tanggal_akhir' => $tanggalAkhir,
+                    'tanggal_akhir' => $tanggalAkhir, 
                     'filter_metode' => $filterMetode ?? 'all',
-                    'filter_pembeli' => $filterPembeli,
+                    'filter_pembeli' => $filterPembeli, 
                     'barang_id' => $barangId
                 ])->links() }}
             </div>

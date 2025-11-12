@@ -14,6 +14,8 @@ class PesananDetail extends Model
         'barang_id',
         'jumlah',
         'harga_satuan',
+        'harga_beli',
+        'harga_jual',
         'subtotal'
     ];
 

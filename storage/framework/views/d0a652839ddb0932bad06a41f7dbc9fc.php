@@ -1,13 +1,13 @@
-@extends('layouts.app')
-@section('title','Buat Transaksi')
-@section('content')
+
+<?php $__env->startSection('title','Buat Transaksi'); ?>
+<?php $__env->startSection('content'); ?>
 <div class="py-6" style="background-color: #EDF7FC; min-height: 100vh;">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="mb-6">
             <div class="flex items-center justify-between mb-2">
                 <div class="flex items-center space-x-3">
-                    <a href="{{ route('kasir.dashboard') }}" class="text-gray-600 hover:text-gray-800 transition-colors">
+                    <a href="<?php echo e(route('kasir.dashboard')); ?>" class="text-gray-600 hover:text-gray-800 transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                         </svg>
@@ -19,7 +19,7 @@
         </div>
 
         <!-- Error Messages -->
-        @if($errors->any())
+        <?php if($errors->any()): ?>
         <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg">
             <div class="flex items-center">
                 <svg class="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -28,17 +28,17 @@
                 <div>
                     <p class="font-semibold text-red-800">Terjadi Kesalahan!</p>
                     <ul class="mt-1 text-sm text-red-700">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li><?php echo e($error); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
                 </div>
             </div>
         </div>
-        @endif
+        <?php endif; ?>
 
-        <form method="POST" action="{{ route('kasir.transaksi.store') }}" id="transaksiForm">
-            @csrf
+        <form method="POST" action="<?php echo e(route('kasir.transaksi.store')); ?>" id="transaksiForm">
+            <?php echo csrf_field(); ?>
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Left Side - Product List -->
@@ -136,7 +136,7 @@
                                     </svg>
                                     Daftar Produk
                                 </h3>
-                                <span class="text-sm text-gray-500" id="productCount">{{ $barang->count() }} produk</span>
+                                <span class="text-sm text-gray-500" id="productCount"><?php echo e($barang->count()); ?> produk</span>
                             </div>
                             
                             <!-- Search Box -->
@@ -155,49 +155,51 @@
                         </div>
 
                         <div class="space-y-3 max-h-[500px] overflow-y-auto pr-2" id="productList">
-                            @foreach($barang as $b)
+                            <?php $__currentLoopData = $barang; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $b): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="border border-gray-200 rounded-lg p-4 hover:border-[#0C5587] transition-colors product-item cursor-pointer" 
-                                 data-product-name="{{ strtolower($b->nama_barang) }}"
-                                 onclick="toggleProductByClick({{ $b->id }}, event)">
+                                 data-product-name="<?php echo e(strtolower($b->nama_barang)); ?>"
+                                 onclick="toggleProductByClick(<?php echo e($b->id); ?>, event)">
                                 <div class="flex items-start gap-4">
                                     <div class="flex-shrink-0">
                                         <input class="w-5 h-5 rounded cursor-pointer product-checkbox" 
                                                type="checkbox" 
-                                               value="{{ $b->id }}" 
-                                               id="b{{ $b->id }}" 
-                                               data-harga="{{ $b->harga_jual }}"
-                                               data-harga-beli="{{ $b->harga_beli }}"
-                                               data-nama="{{ $b->nama_barang }}"
-                                               data-stok="{{ $b->stok }}"
+                                               value="<?php echo e($b->id); ?>" 
+                                               id="b<?php echo e($b->id); ?>" 
+                                               data-harga="<?php echo e($b->harga_jual); ?>"
+                                               data-harga-beli="<?php echo e($b->harga_beli); ?>"
+                                               data-nama="<?php echo e($b->nama_barang); ?>"
+                                               data-stok="<?php echo e($b->stok); ?>"
                                                style="accent-color: #0C5587;"
-                                               onclick="event.stopPropagation(); toggleProduct({{ $b->id }});">
+                                               onclick="event.stopPropagation(); toggleProduct(<?php echo e($b->id); ?>);">
                                     </div>
                                     <div class="flex-1">
                                         <div class="font-semibold text-gray-900">
-                                            {{ $b->nama_barang }}
+                                            <?php echo e($b->nama_barang); ?>
+
                                         </div>
                                         <div class="flex items-center gap-4 mt-1 text-sm">
                                             <span class="text-lg font-bold" style="color: #0C5587;">
-                                                Rp {{ number_format($b->harga_jual,0,',','.') }}
+                                                Rp <?php echo e(number_format($b->harga_jual,0,',','.')); ?>
+
                                             </span>
                                             <span class="text-gray-500">
-                                                Stok: <span class="font-semibold">{{ $b->stok }}</span>
+                                                Stok: <span class="font-semibold"><?php echo e($b->stok); ?></span>
                                             </span>
                                         </div>
-                                        <div class="mt-3 hidden" id="qty-container-{{ $b->id }}" onclick="event.stopPropagation()">
+                                        <div class="mt-3 hidden" id="qty-container-<?php echo e($b->id); ?>" onclick="event.stopPropagation()">
                                             <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah</label>
                                             <div class="flex items-center gap-2">
-                                                <button type="button" onclick="decrementQty({{ $b->id }})" class="px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-bold transition-colors">
+                                                <button type="button" onclick="decrementQty(<?php echo e($b->id); ?>)" class="px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-bold transition-colors">
                                                     -
                                                 </button>
                                                 <input type="number" 
-                                                       id="qty-{{ $b->id }}"
+                                                       id="qty-<?php echo e($b->id); ?>"
                                                        min="1" 
-                                                       max="{{ $b->stok }}" 
+                                                       max="<?php echo e($b->stok); ?>" 
                                                        value="1"
                                                        class="w-20 px-3 py-2 text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0C5587]"
                                                        onchange="updateCart()">
-                                                <button type="button" onclick="incrementQty({{ $b->id }}, {{ $b->stok }})" class="px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-bold transition-colors">
+                                                <button type="button" onclick="incrementQty(<?php echo e($b->id); ?>, <?php echo e($b->stok); ?>)" class="px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-bold transition-colors">
                                                     +
                                                 </button>
                                             </div>
@@ -205,7 +207,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
                     </div>
                 </div>
@@ -346,14 +348,16 @@
     let memberDiskonPersen = 0;
     let useMember = false;
     let allMembers = [
-        @foreach($members as $m)
+        <?php $__currentLoopData = $members; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $m): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         {
-            id: {{ $m->id }},
-            name: "{{ $m->name }}",
-            code: "{{ $m->kode_member }}",
-            diskon: {{ $m->diskon_member ?? 0 }}
-        }{{ !$loop->last ? ',' : '' }}
-        @endforeach
+            id: <?php echo e($m->id); ?>,
+            name: "<?php echo e($m->name); ?>",
+            code: "<?php echo e($m->kode_member); ?>",
+            diskon: <?php echo e($m->diskon_member ?? 0); ?>
+
+        }<?php echo e(!$loop->last ? ',' : ''); ?>
+
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     ];
 
     // Initialize on DOM ready
@@ -824,4 +828,6 @@
         submitBtn.innerHTML = '<svg class="w-5 h-5 inline-block mr-2 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memproses...';
     });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\kasir\resources\views/kasir/transaksi/create.blade.php ENDPATH**/ ?>

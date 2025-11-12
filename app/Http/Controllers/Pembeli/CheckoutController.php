@@ -92,12 +92,6 @@ class CheckoutController extends Controller
             
             $totalBayar = $total - $diskon + $ongkir;
             
-            // Set jadwal ambil untuk pickup (3 hari dari sekarang)
-            $jadwalAmbil = null;
-            if ($request->metode_pengiriman === 'pickup') {
-                $jadwalAmbil = now()->addDays(3);
-            }
-            
             // Buat pesanan
             $pesanan = Pesanan::create([
                 'user_id' => Auth::id(),
@@ -111,7 +105,6 @@ class CheckoutController extends Controller
                 'alamat_pengiriman' => $request->alamat_pengiriman,
                 'no_hp_pengiriman' => $request->no_hp,
                 'ongkir' => $ongkir,
-                'jadwal_ambil' => $jadwalAmbil,
             ]);
             
             // Simpan detail pesanan (STOK BELUM DIKURANGI, nanti saat selesai)

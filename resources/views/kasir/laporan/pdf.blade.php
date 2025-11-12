@@ -24,6 +24,13 @@
             color: #666;
             margin: 5px 0;
         }
+        .filter-info {
+            margin: 15px 0;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            font-size: 10px;
+        }
         .summary { 
             margin: 20px 0;
             padding: 15px;
@@ -72,14 +79,6 @@
             color: #666;
             font-size: 10px;
         }
-        .filter-info {
-            margin: 15px 0;
-            padding: 10px;
-            background: #FFF8DC;
-            border-left: 4px solid #FFA500;
-            border-radius: 3px;
-            font-size: 10px;
-        }
     </style>
 </head>
 <body>
@@ -89,7 +88,7 @@
         <p>Periode: {{ \Carbon\Carbon::parse($tanggalMulai)->format('d M Y') }} - {{ \Carbon\Carbon::parse($tanggalAkhir)->format('d M Y') }}</p>
     </div>
     
-    @if(($filterMetode ?? 'all') !== 'all' || $filterPembeli !== 'all' || $barang)
+    @if(($filterMetode ?? 'all') !== 'all' || $filterPembeli !== 'all' || $barangId)
     <div class="filter-info">
         <strong>Filter yang diterapkan:</strong><br>
         @if(($filterMetode ?? 'all') === 'online')
@@ -102,8 +101,8 @@
         @elseif($filterPembeli === 'non-member')
         - Tipe Pembeli: Hanya Non-Member<br>
         @endif
-        @if($barang)
-        - Produk: {{ $barang->nama_barang }}<br>
+        @if($barangId)
+        - Produk: {{ \App\Models\Barang::find($barangId)->nama_barang ?? 'Unknown' }}<br>
         @endif
     </div>
     @endif

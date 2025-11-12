@@ -1,6 +1,6 @@
-@extends('layouts.app')
-@section('title','Riwayat Pesanan')
-@section('content')
+
+<?php $__env->startSection('title','Riwayat Pesanan'); ?>
+<?php $__env->startSection('content'); ?>
 <div class="max-w-7xl mx-auto">
     <div class="mb-8">
         <h1 class="text-3xl font-bold" style="color: #0C5587;">Riwayat Pesanan Saya</h1>
@@ -10,25 +10,25 @@
     <!-- Quick Filter Tabs -->
     <div class="bg-white rounded-xl shadow-md p-4 mb-6">
         <div class="flex flex-wrap gap-2">
-            <a href="{{ route('pembeli.pesanan.index') }}" 
-                class="px-4 py-2 rounded-lg font-medium transition-all {{ !request()->anyFilled(['status', 'dari_tanggal', 'sampai_tanggal']) ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}"
-                style="{{ !request()->anyFilled(['status', 'dari_tanggal', 'sampai_tanggal']) ? 'background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);' : '' }}">
+            <a href="<?php echo e(route('pembeli.pesanan.index')); ?>" 
+                class="px-4 py-2 rounded-lg font-medium transition-all <?php echo e(!request()->anyFilled(['status', 'dari_tanggal', 'sampai_tanggal']) ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'); ?>"
+                style="<?php echo e(!request()->anyFilled(['status', 'dari_tanggal', 'sampai_tanggal']) ? 'background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);' : ''); ?>">
                 Semua
             </a>
-            <a href="{{ route('pembeli.pesanan.index', ['status' => 'pending']) }}" 
-                class="px-4 py-2 rounded-lg font-medium transition-all {{ request('status') == 'pending' ? 'bg-yellow-100 text-yellow-800 border-2 border-yellow-300' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+            <a href="<?php echo e(route('pembeli.pesanan.index', ['status' => 'pending'])); ?>" 
+                class="px-4 py-2 rounded-lg font-medium transition-all <?php echo e(request('status') == 'pending' ? 'bg-yellow-100 text-yellow-800 border-2 border-yellow-300' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'); ?>">
                 Menunggu
             </a>
-            <a href="{{ route('pembeli.pesanan.index', ['status' => 'diproses']) }}" 
-                class="px-4 py-2 rounded-lg font-medium transition-all {{ request('status') == 'diproses' ? 'bg-blue-100 text-blue-800 border-2 border-blue-300' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+            <a href="<?php echo e(route('pembeli.pesanan.index', ['status' => 'diproses'])); ?>" 
+                class="px-4 py-2 rounded-lg font-medium transition-all <?php echo e(request('status') == 'diproses' ? 'bg-blue-100 text-blue-800 border-2 border-blue-300' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'); ?>">
                 Diproses
             </a>
-            <a href="{{ route('pembeli.pesanan.index', ['status' => 'selesai']) }}" 
-                class="px-4 py-2 rounded-lg font-medium transition-all {{ request('status') == 'selesai' ? 'bg-green-100 text-green-800 border-2 border-green-300' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+            <a href="<?php echo e(route('pembeli.pesanan.index', ['status' => 'selesai'])); ?>" 
+                class="px-4 py-2 rounded-lg font-medium transition-all <?php echo e(request('status') == 'selesai' ? 'bg-green-100 text-green-800 border-2 border-green-300' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'); ?>">
                 Selesai
             </a>
-            <a href="{{ route('pembeli.pesanan.index', ['status' => 'dibatalkan']) }}" 
-                class="px-4 py-2 rounded-lg font-medium transition-all {{ request('status') == 'dibatalkan' ? 'bg-red-100 text-red-800 border-2 border-red-300' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+            <a href="<?php echo e(route('pembeli.pesanan.index', ['status' => 'dibatalkan'])); ?>" 
+                class="px-4 py-2 rounded-lg font-medium transition-all <?php echo e(request('status') == 'dibatalkan' ? 'bg-red-100 text-red-800 border-2 border-red-300' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'); ?>">
                 Dibatalkan
             </a>
         </div>
@@ -45,23 +45,23 @@
                 </svg>
             </button>
         </div>
-        <form method="GET" action="{{ route('pembeli.pesanan.index') }}" id="advancedFilter" class="grid grid-cols-1 md:grid-cols-4 gap-4 hidden">
+        <form method="GET" action="<?php echo e(route('pembeli.pesanan.index')); ?>" id="advancedFilter" class="grid grid-cols-1 md:grid-cols-4 gap-4 hidden">
             <!-- Filter Status -->
             <div>
                 <label class="block text-sm font-semibold mb-2" style="color: #0C5587;">Status</label>
                 <select name="status" class="w-full px-4 py-2 rounded-lg border-2 focus:outline-none focus:ring-2 focus:ring-blue-500" style="border-color: #B1D7F2;">
                     <option value="">Semua Status</option>
-                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu</option>
-                    <option value="diproses" {{ request('status') == 'diproses' ? 'selected' : '' }}>Diproses</option>
-                    <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
-                    <option value="dibatalkan" {{ request('status') == 'dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
+                    <option value="pending" <?php echo e(request('status') == 'pending' ? 'selected' : ''); ?>>Menunggu</option>
+                    <option value="diproses" <?php echo e(request('status') == 'diproses' ? 'selected' : ''); ?>>Diproses</option>
+                    <option value="selesai" <?php echo e(request('status') == 'selesai' ? 'selected' : ''); ?>>Selesai</option>
+                    <option value="dibatalkan" <?php echo e(request('status') == 'dibatalkan' ? 'selected' : ''); ?>>Dibatalkan</option>
                 </select>
             </div>
 
             <!-- Filter Tanggal Dari -->
             <div>
                 <label class="block text-sm font-semibold mb-2" style="color: #0C5587;">Dari Tanggal</label>
-                <input type="date" name="dari_tanggal" value="{{ request('dari_tanggal') }}" 
+                <input type="date" name="dari_tanggal" value="<?php echo e(request('dari_tanggal')); ?>" 
                     class="w-full px-4 py-2 rounded-lg border-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
                     style="border-color: #B1D7F2;">
             </div>
@@ -69,7 +69,7 @@
             <!-- Filter Tanggal Sampai -->
             <div>
                 <label class="block text-sm font-semibold mb-2" style="color: #0C5587;">Sampai Tanggal</label>
-                <input type="date" name="sampai_tanggal" value="{{ request('sampai_tanggal') }}" 
+                <input type="date" name="sampai_tanggal" value="<?php echo e(request('sampai_tanggal')); ?>" 
                     class="w-full px-4 py-2 rounded-lg border-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
                     style="border-color: #B1D7F2;">
             </div>
@@ -84,80 +84,84 @@
                     </svg>
                     Filter
                 </button>
-                @if(request()->anyFilled(['status', 'dari_tanggal', 'sampai_tanggal']))
-                    <a href="{{ route('pembeli.pesanan.index') }}" 
+                <?php if(request()->anyFilled(['status', 'dari_tanggal', 'sampai_tanggal'])): ?>
+                    <a href="<?php echo e(route('pembeli.pesanan.index')); ?>" 
                         class="px-4 py-2 rounded-lg border-2 font-semibold hover:bg-gray-50 transition-colors"
                         style="border-color: #B1D7F2; color: #0C5587;">
                         Reset
                     </a>
-                @endif
+                <?php endif; ?>
             </div>
         </form>
 
         <!-- Summary Info -->
-        @if(request()->anyFilled(['status', 'dari_tanggal', 'sampai_tanggal']))
+        <?php if(request()->anyFilled(['status', 'dari_tanggal', 'sampai_tanggal'])): ?>
             <div class="mt-4 pt-4 border-t border-gray-200">
                 <p class="text-sm text-gray-600">
-                    Menampilkan <span class="font-semibold" style="color: #0C5587;">{{ $pesanans->total() }} pesanan</span>
-                    @if(request('status'))
-                        dengan status <span class="font-semibold">{{ ucfirst(request('status')) }}</span>
-                    @endif
-                    @if(request('dari_tanggal'))
-                        dari <span class="font-semibold">{{ \Carbon\Carbon::parse(request('dari_tanggal'))->format('d M Y') }}</span>
-                    @endif
-                    @if(request('sampai_tanggal'))
-                        sampai <span class="font-semibold">{{ \Carbon\Carbon::parse(request('sampai_tanggal'))->format('d M Y') }}</span>
-                    @endif
+                    Menampilkan <span class="font-semibold" style="color: #0C5587;"><?php echo e($pesanans->total()); ?> pesanan</span>
+                    <?php if(request('status')): ?>
+                        dengan status <span class="font-semibold"><?php echo e(ucfirst(request('status'))); ?></span>
+                    <?php endif; ?>
+                    <?php if(request('dari_tanggal')): ?>
+                        dari <span class="font-semibold"><?php echo e(\Carbon\Carbon::parse(request('dari_tanggal'))->format('d M Y')); ?></span>
+                    <?php endif; ?>
+                    <?php if(request('sampai_tanggal')): ?>
+                        sampai <span class="font-semibold"><?php echo e(\Carbon\Carbon::parse(request('sampai_tanggal'))->format('d M Y')); ?></span>
+                    <?php endif; ?>
                 </p>
             </div>
-        @endif
+        <?php endif; ?>
     </div>
 
-    @if(session('success'))
+    <?php if(session('success')): ?>
         <div class="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded-lg shadow-md">
             <div class="flex items-center">
                 <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                 </svg>
-                {{ session('success') }}
+                <?php echo e(session('success')); ?>
+
             </div>
         </div>
-    @endif
+    <?php endif; ?>
 
-    @if($pesanans->count() > 0)
+    <?php if($pesanans->count() > 0): ?>
         <div class="space-y-4">
-            @foreach($pesanans as $pesanan)
+            <?php $__currentLoopData = $pesanans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pesanan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                     <div class="p-6">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                             <div>
                                 <h3 class="text-xl font-bold mb-2" style="color: #0C5587;">
-                                    {{ $pesanan->kode_pesanan }}
+                                    <?php echo e($pesanan->kode_pesanan); ?>
+
                                 </h3>
                                 <p class="text-sm text-gray-500">
                                     <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                     </svg>
-                                    Dipesan: {{ $pesanan->created_at->format('d M Y, H:i') }}
+                                    Dipesan: <?php echo e($pesanan->created_at->format('d M Y, H:i')); ?>
+
                                 </p>
                             </div>
                             <div class="mt-4 md:mt-0">
                                 <span class="px-4 py-2 rounded-full text-sm font-semibold
-                                    @if($pesanan->status == 'pending') bg-yellow-100 text-yellow-800
-                                    @elseif($pesanan->status == 'diproses') bg-blue-100 text-blue-800
-                                    @elseif($pesanan->status == 'siap_diambil') bg-green-100 text-green-800
-                                    @elseif($pesanan->status == 'selesai') bg-gray-100 text-gray-800
-                                    @else bg-red-100 text-red-800
-                                    @endif">
-                                    @if($pesanan->status == 'siap_diambil')
-                                        @if($pesanan->metode_pengiriman === 'delivery')
+                                    <?php if($pesanan->status == 'pending'): ?> bg-yellow-100 text-yellow-800
+                                    <?php elseif($pesanan->status == 'diproses'): ?> bg-blue-100 text-blue-800
+                                    <?php elseif($pesanan->status == 'siap_diambil'): ?> bg-green-100 text-green-800
+                                    <?php elseif($pesanan->status == 'selesai'): ?> bg-gray-100 text-gray-800
+                                    <?php else: ?> bg-red-100 text-red-800
+                                    <?php endif; ?>">
+                                    <?php if($pesanan->status == 'siap_diambil'): ?>
+                                        <?php if($pesanan->metode_pengiriman === 'delivery'): ?>
                                             🚚 Sedang Diantar
-                                        @else
+                                        <?php else: ?>
                                             Siap Diambil
-                                        @endif
-                                    @else
-                                        {{ ucfirst(str_replace('_', ' ', $pesanan->status)) }}
-                                    @endif
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                        <?php echo e(ucfirst(str_replace('_', ' ', $pesanan->status))); ?>
+
+                                    <?php endif; ?>
                                 </span>
                             </div>
                         </div>
@@ -165,15 +169,15 @@
                         <div class="border-t border-gray-200 pt-4 mb-4">
                             <p class="text-sm text-gray-600 mb-2">Item pesanan:</p>
                             <div class="space-y-2">
-                                @foreach($pesanan->details->take(3) as $detail)
+                                <?php $__currentLoopData = $pesanan->details->take(3); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $detail): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <div class="flex justify-between text-sm">
-                                        <span class="text-gray-700">{{ $detail->jumlah }}x {{ $detail->barang->nama_barang }}</span>
-                                        <span class="font-semibold" style="color: #0884D1;">Rp {{ number_format($detail->subtotal, 0, ',', '.') }}</span>
+                                        <span class="text-gray-700"><?php echo e($detail->jumlah); ?>x <?php echo e($detail->barang->nama_barang); ?></span>
+                                        <span class="font-semibold" style="color: #0884D1;">Rp <?php echo e(number_format($detail->subtotal, 0, ',', '.')); ?></span>
                                     </div>
-                                @endforeach
-                                @if($pesanan->details->count() > 3)
-                                    <p class="text-sm text-gray-500">dan {{ $pesanan->details->count() - 3 }} item lainnya</p>
-                                @endif
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php if($pesanan->details->count() > 3): ?>
+                                    <p class="text-sm text-gray-500">dan <?php echo e($pesanan->details->count() - 3); ?> item lainnya</p>
+                                <?php endif; ?>
                             </div>
                         </div>
 
@@ -181,39 +185,41 @@
                             <div>
                                 <p class="text-sm text-gray-600">Total Pembayaran</p>
                                 <p class="text-2xl font-bold" style="color: #0C5587;">
-                                    Rp {{ number_format($pesanan->total_bayar, 0, ',', '.') }}
+                                    Rp <?php echo e(number_format($pesanan->total_bayar, 0, ',', '.')); ?>
+
                                 </p>
-                                @if($pesanan->denda_telat > 0)
-                                    <p class="text-sm text-red-600 mt-1">+ Denda: Rp {{ number_format($pesanan->denda_telat, 0, ',', '.') }}</p>
-                                    <p class="text-sm font-semibold text-gray-700">Total: Rp {{ number_format($pesanan->getTotalDenganDenda(), 0, ',', '.') }}</p>
-                                @endif
+                                <?php if($pesanan->denda_telat > 0): ?>
+                                    <p class="text-sm text-red-600 mt-1">+ Denda: Rp <?php echo e(number_format($pesanan->denda_telat, 0, ',', '.')); ?></p>
+                                    <p class="text-sm font-semibold text-gray-700">Total: Rp <?php echo e(number_format($pesanan->getTotalDenganDenda(), 0, ',', '.')); ?></p>
+                                <?php endif; ?>
                             </div>
                             <div class="flex space-x-2">
-                                <a href="{{ route('pembeli.pesanan.show', $pesanan->id) }}" 
+                                <a href="<?php echo e(route('pembeli.pesanan.show', $pesanan->id)); ?>" 
                                     class="px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all border-2"
                                     style="border-color: #0C5587; color: #0C5587;">
                                     Lihat Detail
                                 </a>
-                                @if($pesanan->status == 'pending')
-                                    <form action="{{ route('pembeli.pesanan.cancel', $pesanan->id) }}" method="POST" 
+                                <?php if($pesanan->status == 'pending'): ?>
+                                    <form action="<?php echo e(route('pembeli.pesanan.cancel', $pesanan->id)); ?>" method="POST" 
                                         onsubmit="return confirm('Yakin ingin membatalkan pesanan ini?')">
-                                        @csrf
+                                        <?php echo csrf_field(); ?>
                                         <button type="submit" class="px-6 py-3 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors shadow-md">
                                             Batalkan
                                         </button>
                                     </form>
-                                @endif
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
                 </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
 
         <div class="mt-8">
-            {{ $pesanans->links() }}
+            <?php echo e($pesanans->links()); ?>
+
         </div>
-    @else
+    <?php else: ?>
         <div class="bg-white rounded-xl shadow-md p-16">
             <div class="text-center">
                 <div class="mb-6 flex justify-center">
@@ -225,7 +231,7 @@
                 </div>
                 <h2 class="text-2xl font-bold mb-3" style="color: #0C5587;">Belum Ada Pesanan</h2>
                 <p class="text-gray-600 mb-8">Anda belum pernah membuat pesanan. Yuk, mulai belanja!</p>
-                <a href="{{ route('pembeli.dashboard') }}" 
+                <a href="<?php echo e(route('pembeli.dashboard')); ?>" 
                     class="inline-flex items-center px-8 py-4 rounded-lg text-white font-bold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 space-x-2"
                     style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -235,7 +241,7 @@
                 </a>
             </div>
         </div>
-    @endif
+    <?php endif; ?>
 </div>
 
 <script>
@@ -257,11 +263,13 @@
 
     // Auto show filter if any advanced filter is active
     document.addEventListener('DOMContentLoaded', function() {
-        const hasAdvancedFilter = {{ request()->anyFilled(['dari_tanggal', 'sampai_tanggal']) ? 'true' : 'false' }};
+        const hasAdvancedFilter = <?php echo e(request()->anyFilled(['dari_tanggal', 'sampai_tanggal']) ? 'true' : 'false'); ?>;
         if (hasAdvancedFilter) {
             toggleFilter();
         }
     });
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\kasir\resources\views/pembeli/pesanan/index.blade.php ENDPATH**/ ?>

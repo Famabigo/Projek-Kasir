@@ -1,6 +1,6 @@
-@extends('layouts.app')
-@section('title','Riwayat Transaksi')
-@section('content')
+
+<?php $__env->startSection('title','Riwayat Transaksi'); ?>
+<?php $__env->startSection('content'); ?>
 <div class="py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
@@ -9,7 +9,7 @@
                 <h2 class="text-3xl font-bold" style="color: #0C5587;">Riwayat Transaksi</h2>
                 <p class="text-gray-600 mt-2">Semua transaksi online dan offline</p>
             </div>
-            <a href="{{ route('kasir.transaksi.create') }}" 
+            <a href="<?php echo e(route('kasir.transaksi.create')); ?>" 
                class="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
                style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -22,9 +22,9 @@
         <!-- Filter Tabs -->
         <div class="mb-6">
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-2 inline-flex gap-2">
-                <a href="{{ route('kasir.transaksi.index', ['filter' => 'all']) }}" 
-                   class="px-6 py-2 rounded-md font-medium transition-all duration-200 {{ $filter === 'all' ? 'text-white shadow-md' : 'text-gray-600 hover:bg-gray-100' }}"
-                   style="{{ $filter === 'all' ? 'background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);' : '' }}">
+                <a href="<?php echo e(route('kasir.transaksi.index', ['filter' => 'all'])); ?>" 
+                   class="px-6 py-2 rounded-md font-medium transition-all duration-200 <?php echo e($filter === 'all' ? 'text-white shadow-md' : 'text-gray-600 hover:bg-gray-100'); ?>"
+                   style="<?php echo e($filter === 'all' ? 'background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);' : ''); ?>">
                     <span class="flex items-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
@@ -32,27 +32,28 @@
                         Semua
                     </span>
                 </a>
-                <a href="{{ route('kasir.transaksi.index', ['filter' => 'online']) }}" 
-                   class="px-6 py-2 rounded-md font-medium transition-all duration-200 relative {{ $filter === 'online' ? 'text-white shadow-md' : 'text-gray-600 hover:bg-gray-100' }}"
-                   style="{{ $filter === 'online' ? 'background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);' : '' }}">
+                <a href="<?php echo e(route('kasir.transaksi.index', ['filter' => 'online'])); ?>" 
+                   class="px-6 py-2 rounded-md font-medium transition-all duration-200 relative <?php echo e($filter === 'online' ? 'text-white shadow-md' : 'text-gray-600 hover:bg-gray-100'); ?>"
+                   style="<?php echo e($filter === 'online' ? 'background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);' : ''); ?>">
                     <span class="flex items-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
                         </svg>
                         Pesanan Online
-                        @php
+                        <?php
                             $pesananMenunggu = \App\Models\Pesanan::where('status', 'menunggu')->count();
-                        @endphp
-                        @if($pesananMenunggu > 0)
+                        ?>
+                        <?php if($pesananMenunggu > 0): ?>
                         <span class="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold animate-pulse">
-                            {{ $pesananMenunggu }}
+                            <?php echo e($pesananMenunggu); ?>
+
                         </span>
-                        @endif
+                        <?php endif; ?>
                     </span>
                 </a>
-                <a href="{{ route('kasir.transaksi.index', ['filter' => 'offline']) }}" 
-                   class="px-6 py-2 rounded-md font-medium transition-all duration-200 {{ $filter === 'offline' ? 'text-white shadow-md' : 'text-gray-600 hover:bg-gray-100' }}"
-                   style="{{ $filter === 'offline' ? 'background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);' : '' }}">
+                <a href="<?php echo e(route('kasir.transaksi.index', ['filter' => 'offline'])); ?>" 
+                   class="px-6 py-2 rounded-md font-medium transition-all duration-200 <?php echo e($filter === 'offline' ? 'text-white shadow-md' : 'text-gray-600 hover:bg-gray-100'); ?>"
+                   style="<?php echo e($filter === 'offline' ? 'background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);' : ''); ?>">
                     <span class="flex items-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
@@ -64,14 +65,14 @@
         </div>
 
         <!-- Transaksi Offline -->
-        @if($filter === 'all' || $filter === 'offline')
-        @if($transaksi->count() > 0)
+        <?php if($filter === 'all' || $filter === 'offline'): ?>
+        <?php if($transaksi->count() > 0): ?>
         <div class="mb-8">
             <h3 class="text-xl font-semibold mb-4" style="color: #0C5587;">
                 <svg class="w-6 h-6 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
-                Pembelian Offline ({{ $transaksi->count() }})
+                Pembelian Offline (<?php echo e($transaksi->count()); ?>)
             </h3>
             <div class="card-hover bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
                 <div class="overflow-x-auto">
@@ -88,37 +89,38 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                            @foreach($transaksi as $index => $t)
+                            <?php $__currentLoopData = $transaksi; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $t): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr class="hover:bg-blue-50 transition-colors">
                                 <td class="px-6 py-4">
-                                    <span class="font-bold text-lg" style="color: #0C5587;">#{{ $index + 1 }}</span>
+                                    <span class="font-bold text-lg" style="color: #0C5587;">#<?php echo e($index + 1); ?></span>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-700">
-                                    {{ $t->created_at->format('d M Y') }}<br>
-                                    <span class="text-xs text-gray-500">{{ $t->created_at->format('H:i') }}</span>
+                                    <?php echo e($t->created_at->format('d M Y')); ?><br>
+                                    <span class="text-xs text-gray-500"><?php echo e($t->created_at->format('H:i')); ?></span>
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-700">{{ $t->kasir->name ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-700"><?php echo e($t->kasir->name ?? '-'); ?></td>
                                 <td class="px-6 py-4 text-sm">
-                                    @if($t->member)
+                                    <?php if($t->member): ?>
                                     <span class="px-2 py-1 rounded text-xs font-medium text-white" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">
-                                        {{ $t->member->name }}
+                                        <?php echo e($t->member->name); ?>
+
                                     </span>
-                                    @else
+                                    <?php else: ?>
                                     <span class="text-gray-400">Non-Member</span>
-                                    @endif
+                                    <?php endif; ?>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="font-bold text-green-600">Rp {{ number_format($t->total_harga, 0, ',', '.') }}</span>
+                                    <span class="font-bold text-green-600">Rp <?php echo e(number_format($t->total_harga, 0, ',', '.')); ?></span>
                                 </td>
                                 <td class="px-6 py-4 text-sm">
-                                    @if($t->diskon > 0)
-                                    <span class="text-red-600">- Rp {{ number_format($t->diskon, 0, ',', '.') }}</span>
-                                    @else
+                                    <?php if($t->diskon > 0): ?>
+                                    <span class="text-red-600">- Rp <?php echo e(number_format($t->diskon, 0, ',', '.')); ?></span>
+                                    <?php else: ?>
                                     <span class="text-gray-400">-</span>
-                                    @endif
+                                    <?php endif; ?>
                                 </td>
                                 <td class="px-6 py-4 text-center">
-                                    <a href="{{ route('kasir.transaksi.show', $t->id) }}" 
+                                    <a href="<?php echo e(route('kasir.transaksi.show', $t->id)); ?>" 
                                        class="inline-flex items-center px-4 py-2 rounded-lg font-medium text-white transition-all duration-200 hover:shadow-md"
                                        style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,24 +131,24 @@
                                     </a>
                                 </td>
                             </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        @endif
-        @endif
+        <?php endif; ?>
+        <?php endif; ?>
 
         <!-- Pesanan Online -->
-        @if($filter === 'all' || $filter === 'online')
-        @if($pesanan->count() > 0)
+        <?php if($filter === 'all' || $filter === 'online'): ?>
+        <?php if($pesanan->count() > 0): ?>
         <div>
             <h3 class="text-xl font-semibold mb-4" style="color: #0C5587;">
                 <svg class="w-6 h-6 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
                 </svg>
-                Pesanan Online ({{ $pesanan->count() }})
+                Pesanan Online (<?php echo e($pesanan->count()); ?>)
             </h3>
             <div class="card-hover bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
                 <div class="overflow-x-auto">
@@ -162,62 +164,62 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                            @foreach($pesanan as $p)
+                            <?php $__currentLoopData = $pesanan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr class="hover:bg-blue-50 transition-colors">
                             <td class="px-6 py-4">
                                 <div>
-                                    <span class="font-semibold" style="color: #0C5587;">{{ $p->kode_pesanan }}</span>
-                                    <div class="text-xs text-gray-500 mt-1">{{ $p->user->name }}</div>
+                                    <span class="font-semibold" style="color: #0C5587;"><?php echo e($p->kode_pesanan); ?></span>
+                                    <div class="text-xs text-gray-500 mt-1"><?php echo e($p->user->name); ?></div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 text-sm">
-                                @if($p->status === 'menunggu')
+                                <?php if($p->status === 'menunggu'): ?>
                                     <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-medium">Menunggu</span>
-                                @elseif($p->status === 'diproses')
+                                <?php elseif($p->status === 'diproses'): ?>
                                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">Diproses</span>
-                                @elseif($p->status === 'siap_diambil')
-                                    @if($p->metode_pengiriman === 'delivery')
+                                <?php elseif($p->status === 'siap_diambil'): ?>
+                                    <?php if($p->metode_pengiriman === 'delivery'): ?>
                                         <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">🚚 Sedang Diantar</span>
-                                    @else
+                                    <?php else: ?>
                                         <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-medium">Siap Diambil</span>
-                                    @endif
-                                    @php
+                                    <?php endif; ?>
+                                    <?php
                                         $p->updateDenda();
-                                    @endphp
-                                    @if($p->metode_pengiriman === 'pickup' && $p->isTelat())
+                                    ?>
+                                    <?php if($p->metode_pengiriman === 'pickup' && $p->isTelat()): ?>
                                         <div class="mt-1">
-                                            <span class="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-medium">⚠️ Telat {{ $p->hari_telat }} hari</span>
+                                            <span class="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-medium">⚠️ Telat <?php echo e($p->hari_telat); ?> hari</span>
                                         </div>
-                                    @endif
-                                @elseif($p->status === 'selesai')
+                                    <?php endif; ?>
+                                <?php elseif($p->status === 'selesai'): ?>
                                     <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">Selesai</span>
-                                    @if($p->denda_telat > 0)
-                                        <div class="mt-1 text-xs text-red-600">Denda: Rp {{ number_format($p->denda_telat, 0, ',', '.') }}</div>
-                                    @endif
-                                @elseif($p->status === 'dibatalkan')
+                                    <?php if($p->denda_telat > 0): ?>
+                                        <div class="mt-1 text-xs text-red-600">Denda: Rp <?php echo e(number_format($p->denda_telat, 0, ',', '.')); ?></div>
+                                    <?php endif; ?>
+                                <?php elseif($p->status === 'dibatalkan'): ?>
                                     <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-medium">Dibatalkan</span>
-                                @endif
+                                <?php endif; ?>
                             </td>
                             <td class="px-6 py-4 text-sm">
-                                <div class="text-gray-700">{{ $p->details->count() }} item</div>
-                                @if($p->waktu_ambil)
-                                    <div class="text-xs font-medium text-blue-600">Ambil: {{ $p->waktu_ambil->format('d M, H:i') }}</div>
-                                @endif
-                                @if($p->jadwal_ambil)
-                                    <div class="text-xs text-gray-500">Siap: {{ $p->jadwal_ambil->format('d M, H:i') }}</div>
-                                @endif
+                                <div class="text-gray-700"><?php echo e($p->details->count()); ?> item</div>
+                                <?php if($p->waktu_ambil): ?>
+                                    <div class="text-xs font-medium text-blue-600">Ambil: <?php echo e($p->waktu_ambil->format('d M, H:i')); ?></div>
+                                <?php endif; ?>
+                                <?php if($p->jadwal_ambil): ?>
+                                    <div class="text-xs text-gray-500">Siap: <?php echo e($p->jadwal_ambil->format('d M, H:i')); ?></div>
+                                <?php endif; ?>
                             </td>
                             <td class="px-6 py-4">
-                                <span class="font-semibold text-green-600">Rp {{ number_format($p->total_bayar,0,',','.') }}</span>
-                                @if($p->denda_telat > 0)
-                                    <div class="text-xs text-red-600 mt-1">+ Denda: Rp {{ number_format($p->denda_telat, 0, ',', '.') }}</div>
-                                    <div class="text-xs font-semibold text-gray-700 mt-1">Total: Rp {{ number_format($p->total_bayar + $p->denda_telat, 0, ',', '.') }}</div>
-                                @endif
+                                <span class="font-semibold text-green-600">Rp <?php echo e(number_format($p->total_bayar,0,',','.')); ?></span>
+                                <?php if($p->denda_telat > 0): ?>
+                                    <div class="text-xs text-red-600 mt-1">+ Denda: Rp <?php echo e(number_format($p->denda_telat, 0, ',', '.')); ?></div>
+                                    <div class="text-xs font-semibold text-gray-700 mt-1">Total: Rp <?php echo e(number_format($p->total_bayar + $p->denda_telat, 0, ',', '.')); ?></div>
+                                <?php endif; ?>
                             </td>
-                            <td class="px-6 py-4 text-sm text-gray-700">{{ $p->created_at->format('d M Y H:i') }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-700"><?php echo e($p->created_at->format('d M Y H:i')); ?></td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center justify-center space-x-2">
-                                    <button onclick="showDetailModal({{ $p->id }})" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-1">
+                                    <button onclick="showDetailModal(<?php echo e($p->id); ?>)" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-1">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -227,23 +229,23 @@
                                 </div>
                             </td>
                         </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                 </table>
             </div>
         </div>
-        @endif
-        @endif
+        <?php endif; ?>
+        <?php endif; ?>
 
         <!-- Empty State untuk All -->
-        @if($filter === 'all' && $pesanan->count() === 0 && $transaksi->count() === 0)
+        <?php if($filter === 'all' && $pesanan->count() === 0 && $transaksi->count() === 0): ?>
         <div class="card-hover bg-white rounded-xl shadow-lg border border-gray-100 p-12 text-center">
             <svg class="w-24 h-24 mx-auto mb-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
             </svg>
             <p class="text-xl font-semibold text-gray-600 mb-2">Belum Ada Transaksi</p>
             <p class="text-gray-500 mb-6">Mulai buat transaksi baru untuk pembeli</p>
-            <a href="{{ route('kasir.transaksi.create') }}" 
+            <a href="<?php echo e(route('kasir.transaksi.create')); ?>" 
                class="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
                style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -252,10 +254,10 @@
                 Transaksi Baru
             </a>
         </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Empty State untuk Online -->
-        @if($filter === 'online' && $pesanan->count() === 0)
+        <?php if($filter === 'online' && $pesanan->count() === 0): ?>
         <div class="card-hover bg-white rounded-xl shadow-lg border border-gray-100 p-12 text-center">
             <svg class="w-24 h-24 mx-auto mb-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
@@ -263,17 +265,17 @@
             <p class="text-xl font-semibold text-gray-600 mb-2">Belum Ada Pesanan Online</p>
             <p class="text-gray-500">Pesanan dari pembeli akan muncul di sini</p>
         </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Empty State untuk Offline -->
-        @if($filter === 'offline' && $transaksi->count() === 0)
+        <?php if($filter === 'offline' && $transaksi->count() === 0): ?>
         <div class="card-hover bg-white rounded-xl shadow-lg border border-gray-100 p-12 text-center">
             <svg class="w-24 h-24 mx-auto mb-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
             </svg>
             <p class="text-xl font-semibold text-gray-600 mb-2">Belum Ada Transaksi Offline</p>
             <p class="text-gray-500 mb-6">Mulai buat transaksi baru untuk pembeli offline</p>
-            <a href="{{ route('kasir.transaksi.create') }}" 
+            <a href="<?php echo e(route('kasir.transaksi.create')); ?>" 
                class="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
                style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -282,7 +284,7 @@
                 Transaksi Baru
             </a>
         </div>
-        @endif
+        <?php endif; ?>
     </div>
 </div>
 
@@ -524,7 +526,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
                 },
                 body: JSON.stringify({ status: status })
             });
@@ -550,7 +552,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
                 },
                 body: JSON.stringify({ status: 'siap_diambil' })
             });
@@ -616,7 +618,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
                 },
                 body: JSON.stringify({ jadwal_ambil: jadwal })
             });
@@ -642,7 +644,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
                 }
             });
             
@@ -665,4 +667,6 @@
     }
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\kasir\resources\views/kasir/transaksi/index.blade.php ENDPATH**/ ?>

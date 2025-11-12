@@ -128,9 +128,9 @@
                             -
                         </button>
                         <input type="number" id="qty-<?php echo e($barang->id); ?>" value="1" min="1" max="<?php echo e($barang->stok); ?>" 
-                            class="w-12 h-8 text-center text-sm font-medium border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#0C5587] disabled:bg-gray-50 disabled:cursor-not-allowed"
-                            disabled
-                            readonly>
+                            class="flex-1 h-8 text-center text-sm font-medium border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#0C5587] disabled:bg-gray-50 disabled:cursor-not-allowed"
+                            oninput="updateQtyOnInput(<?php echo e($barang->id); ?>, <?php echo e($barang->stok); ?>)"
+                            disabled>
                         <button type="button" onclick="incrementQty(<?php echo e($barang->id); ?>, <?php echo e($barang->stok); ?>)" 
                             id="inc-<?php echo e($barang->id); ?>"
                             class="w-8 h-8 rounded flex items-center justify-center border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
@@ -419,6 +419,26 @@
         }
 
         updateSelectedCount();
+    }
+
+    function updateQtyOnInput(productId, maxStock) {
+        const input = document.getElementById(`qty-${productId}`);
+        let value = parseInt(input.value);
+        
+        // Validasi input
+        if (isNaN(value) || value < 1) {
+            input.value = 1;
+            value = 1;
+        } else if (value > maxStock) {
+            input.value = maxStock;
+            value = maxStock;
+            alert(`Maksimal stok tersedia: ${maxStock}`);
+        }
+        
+        // Update selectedProducts jika produk sudah dipilih
+        if (selectedProducts.has(productId)) {
+            selectedProducts.get(productId).quantity = value;
+        }
     }
 
     function decrementQty(productId) {

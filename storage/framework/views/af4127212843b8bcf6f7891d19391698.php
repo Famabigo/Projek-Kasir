@@ -1,6 +1,6 @@
-@extends('layouts.app')
-@section('title','Daftar Member')
-@section('content')
+
+<?php $__env->startSection('title','Daftar Member'); ?>
+<?php $__env->startSection('content'); ?>
 <div class="w-full max-w-5xl mx-auto">
     <!-- Header -->
     <div class="mb-6">
@@ -14,33 +14,33 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h3 class="text-lg font-semibold text-gray-800 mb-1">Status Member</h3>
-                    @if($user->member_status === 'none')
+                    <?php if($user->member_status === 'none'): ?>
                         <p class="text-gray-600">Anda belum mendaftar sebagai member</p>
-                    @elseif($user->member_status === 'pending')
+                    <?php elseif($user->member_status === 'pending'): ?>
                         <p class="text-yellow-600">⏳ Permohonan Anda sedang diproses</p>
-                        @if($user->member_request_at)
-                            <p class="text-sm text-gray-500 mt-1">Diajukan pada: {{ $user->member_request_at->format('d M Y H:i') }}</p>
-                        @endif
-                    @elseif($user->member_status === 'approved')
+                        <?php if($user->member_request_at): ?>
+                            <p class="text-sm text-gray-500 mt-1">Diajukan pada: <?php echo e($user->member_request_at->format('d M Y H:i')); ?></p>
+                        <?php endif; ?>
+                    <?php elseif($user->member_status === 'approved'): ?>
                         <p class="text-green-600">✓ Anda adalah member aktif</p>
                         <div class="mt-2">
                             <span class="text-sm text-gray-600">Kode Member: </span>
-                            <span class="font-bold text-primary">{{ $user->kode_member }}</span>
+                            <span class="font-bold text-primary"><?php echo e($user->kode_member); ?></span>
                         </div>
-                        @if($user->member_approved_at)
-                            <p class="text-sm text-gray-500 mt-1">Disetujui pada: {{ $user->member_approved_at->format('d M Y') }}</p>
-                        @endif
-                    @elseif($user->member_status === 'rejected')
+                        <?php if($user->member_approved_at): ?>
+                            <p class="text-sm text-gray-500 mt-1">Disetujui pada: <?php echo e($user->member_approved_at->format('d M Y')); ?></p>
+                        <?php endif; ?>
+                    <?php elseif($user->member_status === 'rejected'): ?>
                         <p class="text-red-600">✗ Permohonan ditolak</p>
-                        @if($user->reject_reason)
+                        <?php if($user->reject_reason): ?>
                             <div class="mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-                                <p class="text-sm text-gray-700"><span class="font-semibold">Alasan:</span> {{ $user->reject_reason }}</p>
+                                <p class="text-sm text-gray-700"><span class="font-semibold">Alasan:</span> <?php echo e($user->reject_reason); ?></p>
                             </div>
-                        @endif
-                    @endif
+                        <?php endif; ?>
+                    <?php endif; ?>
                 </div>
                 
-                @if($user->member_status === 'approved')
+                <?php if($user->member_status === 'approved'): ?>
                     <div class="text-right">
                         <div class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-secondary to-accent rounded-lg">
                             <svg class="w-5 h-5 text-white mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,12 +49,12 @@
                             <span class="font-bold text-white">VIP MEMBER</span>
                         </div>
                     </div>
-                @endif
+                <?php endif; ?>
             </div>
         </div>
 
         <!-- Member Benefits (jika belum member) -->
-        @if($user->member_status === 'none' || $user->member_status === 'rejected')
+        <?php if($user->member_status === 'none' || $user->member_status === 'rejected'): ?>
             <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border-2 mb-6" style="border-color: #B1D7F2;">
                 <div class="flex items-center mb-4">
                     <div class="w-10 h-10 rounded-full flex items-center justify-center mr-3" style="background: #C7E339;">
@@ -134,13 +134,14 @@
                     </p>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Form Pendaftaran -->
-        @if($user->member_status === 'none' || $user->member_status === 'rejected')
+        <?php if($user->member_status === 'none' || $user->member_status === 'rejected'): ?>
             <div class="bg-white rounded-xl shadow-sm border-2 border-light-blue p-6">
                 <h3 class="text-xl font-bold text-primary mb-2">
-                    {{ $user->member_status === 'rejected' ? 'Daftar Ulang Member' : 'Form Pendaftaran Member' }}
+                    <?php echo e($user->member_status === 'rejected' ? 'Daftar Ulang Member' : 'Form Pendaftaran Member'); ?>
+
                 </h3>
                 <p class="text-sm text-gray-600 mb-4">
                     <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,8 +150,8 @@
                     Lengkapi data tambahan untuk upgrade akun Anda menjadi member VIP
                 </p>
                 
-                <form action="{{ route('pembeli.member-request.store') }}" method="POST">
-                    @csrf
+                <form action="<?php echo e(route('pembeli.member-request.store')); ?>" method="POST">
+                    <?php echo csrf_field(); ?>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <!-- Nama (readonly) -->
@@ -159,7 +160,7 @@
                                 Nama Lengkap
                                 <span class="text-xs font-normal text-gray-500">(dari akun Anda)</span>
                             </label>
-                            <input type="text" value="{{ $user->name }}" readonly class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed">
+                            <input type="text" value="<?php echo e($user->name); ?>" readonly class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed">
                         </div>
                         
                         <!-- Email (readonly) -->
@@ -168,7 +169,7 @@
                                 Email
                                 <span class="text-xs font-normal text-gray-500">(dari akun Anda)</span>
                             </label>
-                            <input type="email" value="{{ $user->email }}" readonly class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed">
+                            <input type="email" value="<?php echo e($user->email); ?>" readonly class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed">
                         </div>
                         
                         <!-- No HP -->
@@ -178,14 +179,28 @@
                                 type="text" 
                                 name="no_hp" 
                                 id="no_hp" 
-                                value="{{ old('no_hp', $user->no_hp) }}" 
+                                value="<?php echo e(old('no_hp', $user->no_hp)); ?>" 
                                 required
                                 maxlength="20"
                                 placeholder="Contoh: 081234567890"
-                                class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all @error('no_hp') border-red-500 @enderror">
-                            @error('no_hp')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                                class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all <?php $__errorArgs = ['no_hp'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
+                            <?php $__errorArgs = ['no_hp'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <p class="text-red-500 text-sm mt-1"><?php echo e($message); ?></p>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
                         
                         <!-- Alamat -->
@@ -198,10 +213,24 @@
                                 required
                                 maxlength="500"
                                 placeholder="Masukkan alamat lengkap Anda"
-                                class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all @error('alamat') border-red-500 @enderror">{{ old('alamat', $user->alamat) }}</textarea>
-                            @error('alamat')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                                class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all <?php $__errorArgs = ['alamat'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"><?php echo e(old('alamat', $user->alamat)); ?></textarea>
+                            <?php $__errorArgs = ['alamat'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <p class="text-red-500 text-sm mt-1"><?php echo e($message); ?></p>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             <p class="text-sm text-gray-500 mt-1">Maksimal 500 karakter</p>
                         </div>
                     </div>
@@ -226,22 +255,23 @@
                     
                     <!-- Submit Button -->
                     <div class="flex items-center justify-end gap-4">
-                        <a href="{{ route('pembeli.dashboard') }}" class="px-6 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg font-semibold transition-colors">
+                        <a href="<?php echo e(route('pembeli.dashboard')); ?>" class="px-6 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg font-semibold transition-colors">
                             Batal
                         </a>
                         <button type="submit" class="px-6 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg font-semibold hover:shadow-lg transition-all flex items-center">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            {{ $user->member_status === 'rejected' ? 'Ajukan Ulang' : 'Ajukan Permohonan' }}
+                            <?php echo e($user->member_status === 'rejected' ? 'Ajukan Ulang' : 'Ajukan Permohonan'); ?>
+
                         </button>
                     </div>
                 </form>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Info untuk status pending -->
-        @if($user->member_status === 'pending')
+        <?php if($user->member_status === 'pending'): ?>
             <div class="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6">
                 <div class="flex items-start">
                     <svg class="w-6 h-6 text-yellow-600 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -252,23 +282,23 @@
                         <p class="text-gray-700 mb-3">Terima kasih telah mendaftar sebagai member! Tim kami sedang memverifikasi data Anda.</p>
                         <div class="bg-white border border-yellow-300 rounded-lg p-3">
                             <p class="text-sm text-gray-600 mb-1"><strong>Data yang diajukan:</strong></p>
-                            <p class="text-sm text-gray-600">No. HP: {{ $user->no_hp }}</p>
-                            <p class="text-sm text-gray-600">Alamat: {{ $user->alamat }}</p>
+                            <p class="text-sm text-gray-600">No. HP: <?php echo e($user->no_hp); ?></p>
+                            <p class="text-sm text-gray-600">Alamat: <?php echo e($user->alamat); ?></p>
                         </div>
                     </div>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Info untuk member approved -->
-        @if($user->member_status === 'approved')
+        <?php if($user->member_status === 'approved'): ?>
             <!-- Member Card -->
             <div class="mb-6 rounded-2xl overflow-hidden shadow-xl" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">
                 <div class="p-8 text-white">
                     <div class="flex items-center justify-between mb-6">
                         <div>
                             <p class="text-blue-100 text-sm mb-1">Member Card</p>
-                            <p class="text-2xl font-bold">{{ $user->name }}</p>
+                            <p class="text-2xl font-bold"><?php echo e($user->name); ?></p>
                         </div>
                         <div class="bg-white bg-opacity-20 rounded-full p-3">
                             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -280,7 +310,7 @@
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div>
                             <p class="text-blue-100 text-sm">Member ID</p>
-                            <p class="text-lg font-mono font-bold">{{ $user->kode_member }}</p>
+                            <p class="text-lg font-mono font-bold"><?php echo e($user->kode_member); ?></p>
                         </div>
                         <div>
                             <p class="text-blue-100 text-sm">Status</p>
@@ -289,7 +319,7 @@
                     </div>
                     
                     <div class="flex items-center justify-between">
-                        <p class="text-sm text-blue-100">Member sejak {{ $user->member_approved_at ? $user->member_approved_at->format('d M Y') : '-' }}</p>
+                        <p class="text-sm text-blue-100">Member sejak <?php echo e($user->member_approved_at ? $user->member_approved_at->format('d M Y') : '-'); ?></p>
                         <div class="px-4 py-2 rounded-lg font-semibold text-white" style="background-color: #C7E339;">
                             VIP MEMBER
                         </div>
@@ -375,7 +405,7 @@
                     <p class="text-sm font-semibold mb-3" style="color: #0C5587;">
                         💡 Tip: Belanja minimal Rp 50.000 untuk otomatis mendapat diskon 15%!
                     </p>
-                    <a href="{{ route('pembeli.dashboard') }}" class="inline-flex items-center px-6 py-3 text-white rounded-lg font-semibold transition-all hover:shadow-lg" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                    <a href="<?php echo e(route('pembeli.dashboard')); ?>" class="inline-flex items-center px-6 py-3 text-white rounded-lg font-semibold transition-all hover:shadow-lg" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
                         Mulai Belanja Sekarang
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -390,16 +420,18 @@
                 <div class="grid md:grid-cols-2 gap-4">
                     <div class="border-2 rounded-lg p-4" style="border-color: #B1D7F2;">
                         <p class="text-sm font-semibold text-gray-700 mb-2">Data Kontak</p>
-                        <p class="text-sm text-gray-600">HP: {{ $user->no_hp }}</p>
-                        <p class="text-sm text-gray-600">Email: {{ $user->email }}</p>
+                        <p class="text-sm text-gray-600">HP: <?php echo e($user->no_hp); ?></p>
+                        <p class="text-sm text-gray-600">Email: <?php echo e($user->email); ?></p>
                     </div>
                     <div class="border-2 rounded-lg p-4" style="border-color: #B1D7F2;">
                         <p class="text-sm font-semibold text-gray-700 mb-2">Alamat</p>
-                        <p class="text-sm text-gray-600">{{ $user->alamat }}</p>
+                        <p class="text-sm text-gray-600"><?php echo e($user->alamat); ?></p>
                     </div>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\kasir\resources\views/pembeli/member-request.blade.php ENDPATH**/ ?>

@@ -1,6 +1,6 @@
-@extends('layouts.app')
-@section('title','Laporan Penjualan')
-@section('content')
+
+<?php $__env->startSection('title','Laporan Penjualan'); ?>
+<?php $__env->startSection('content'); ?>
 <div class="py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
@@ -11,39 +11,39 @@
 
         <!-- Filter Card -->
         <div class="card-hover bg-white rounded-xl shadow-lg border border-gray-100 p-6 mb-6">
-            <form method="GET" action="{{ route('admin.laporan.index') }}">
+            <form method="GET" action="<?php echo e(route('kasir.laporan.index')); ?>">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Mulai</label>
-                        <input type="date" name="tanggal_mulai" value="{{ $tanggalMulai }}" class="w-full px-4 py-2 rounded-lg border-gray-300 transition-all" style="border-color: #B1D7F2;" onfocus="this.style.borderColor='#0C5587'; this.style.outline='2px solid #EDF7FC'" onblur="this.style.borderColor='#B1D7F2'; this.style.outline='none'">
+                        <input type="date" name="tanggal_mulai" value="<?php echo e($tanggalMulai); ?>" class="w-full px-4 py-2 rounded-lg border-gray-300 transition-all" style="border-color: #B1D7F2;" onfocus="this.style.borderColor='#0C5587'; this.style.outline='2px solid #EDF7FC'" onblur="this.style.borderColor='#B1D7F2'; this.style.outline='none'">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Akhir</label>
-                        <input type="date" name="tanggal_akhir" value="{{ $tanggalAkhir }}" class="w-full px-4 py-2 rounded-lg border-gray-300 transition-all" style="border-color: #B1D7F2;" onfocus="this.style.borderColor='#0C5587'; this.style.outline='2px solid #EDF7FC'" onblur="this.style.borderColor='#B1D7F2'; this.style.outline='none'">
+                        <input type="date" name="tanggal_akhir" value="<?php echo e($tanggalAkhir); ?>" class="w-full px-4 py-2 rounded-lg border-gray-300 transition-all" style="border-color: #B1D7F2;" onfocus="this.style.borderColor='#0C5587'; this.style.outline='2px solid #EDF7FC'" onblur="this.style.borderColor='#B1D7F2'; this.style.outline='none'">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Metode Pembelian</label>
                         <select name="filter_metode" class="w-full px-4 py-2 rounded-lg border-gray-300 transition-all" style="border-color: #B1D7F2;" onfocus="this.style.borderColor='#0C5587'; this.style.outline='2px solid #EDF7FC'" onblur="this.style.borderColor='#B1D7F2'; this.style.outline='none'">
-                            <option value="all" {{ ($filterMetode ?? 'all') == 'all' ? 'selected' : '' }}>Semua Metode</option>
-                            <option value="online" {{ ($filterMetode ?? 'all') == 'online' ? 'selected' : '' }}>Pembelian Online</option>
-                            <option value="offline" {{ ($filterMetode ?? 'all') == 'offline' ? 'selected' : '' }}>Pembelian Offline</option>
+                            <option value="all" <?php echo e(($filterMetode ?? 'all') == 'all' ? 'selected' : ''); ?>>Semua Metode</option>
+                            <option value="online" <?php echo e(($filterMetode ?? 'all') == 'online' ? 'selected' : ''); ?>>Pembelian Online</option>
+                            <option value="offline" <?php echo e(($filterMetode ?? 'all') == 'offline' ? 'selected' : ''); ?>>Pembelian Offline</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Tipe Pembeli</label>
                         <select name="filter_pembeli" class="w-full px-4 py-2 rounded-lg border-gray-300 transition-all" style="border-color: #B1D7F2;" onfocus="this.style.borderColor='#0C5587'; this.style.outline='2px solid #EDF7FC'" onblur="this.style.borderColor='#B1D7F2'; this.style.outline='none'">
-                            <option value="all" {{ $filterPembeli == 'all' ? 'selected' : '' }}>Semua Pembeli</option>
-                            <option value="member" {{ $filterPembeli == 'member' ? 'selected' : '' }}>Hanya Member</option>
-                            <option value="non-member" {{ $filterPembeli == 'non-member' ? 'selected' : '' }}>Hanya Non-Member</option>
+                            <option value="all" <?php echo e($filterPembeli == 'all' ? 'selected' : ''); ?>>Semua Pembeli</option>
+                            <option value="member" <?php echo e($filterPembeli == 'member' ? 'selected' : ''); ?>>Hanya Member</option>
+                            <option value="non-member" <?php echo e($filterPembeli == 'non-member' ? 'selected' : ''); ?>>Hanya Non-Member</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Filter Produk</label>
                         <select name="barang_id" class="w-full px-4 py-2 rounded-lg border-gray-300 transition-all" style="border-color: #B1D7F2;" onfocus="this.style.borderColor='#0C5587'; this.style.outline='2px solid #EDF7FC'" onblur="this.style.borderColor='#B1D7F2'; this.style.outline='none'">
                             <option value="">Semua Produk</option>
-                            @foreach($barang as $b)
-                            <option value="{{ $b->id }}" {{ $barangId == $b->id ? 'selected' : '' }}>{{ $b->nama_barang }}</option>
-                            @endforeach
+                            <?php $__currentLoopData = $barang; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $b): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($b->id); ?>" <?php echo e($barangId == $b->id ? 'selected' : ''); ?>><?php echo e($b->nama_barang); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
                 </div>
@@ -54,19 +54,19 @@
                         </svg>
                         <span>Filter</span>
                     </button>
-                    <a href="{{ route('admin.laporan.pdf', ['tanggal_mulai' => $tanggalMulai, 'tanggal_akhir' => $tanggalAkhir, 'filter_pembeli' => $filterPembeli, 'filter_metode' => $filterMetode ?? 'all', 'barang_id' => $barangId]) }}" class="px-6 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2 bg-red-500 hover:bg-red-600 text-white">
+                    <a href="<?php echo e(route('kasir.laporan.pdf', ['tanggal_mulai' => $tanggalMulai, 'tanggal_akhir' => $tanggalAkhir, 'filter_pembeli' => $filterPembeli, 'filter_metode' => $filterMetode ?? 'all', 'barang_id' => $barangId])); ?>" class="px-6 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2 bg-red-500 hover:bg-red-600 text-white">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
                         <span>Cetak PDF</span>
                     </a>
-                    <a href="{{ route('admin.laporan.excel', ['tanggal_mulai' => $tanggalMulai, 'tanggal_akhir' => $tanggalAkhir, 'filter_pembeli' => $filterPembeli, 'filter_metode' => $filterMetode ?? 'all', 'barang_id' => $barangId]) }}" class="px-6 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2 bg-green-500 hover:bg-green-600 text-white">
+                    <a href="<?php echo e(route('kasir.laporan.excel', ['tanggal_mulai' => $tanggalMulai, 'tanggal_akhir' => $tanggalAkhir, 'filter_pembeli' => $filterPembeli, 'filter_metode' => $filterMetode ?? 'all', 'barang_id' => $barangId])); ?>" class="px-6 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2 bg-green-500 hover:bg-green-600 text-white">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
                         <span>Cetak Excel</span>
                     </a>
-                    <a href="{{ route('admin.laporan.index') }}" class="px-6 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2 bg-gray-200 hover:bg-gray-300 text-gray-700">
+                    <a href="<?php echo e(route('kasir.laporan.index')); ?>" class="px-6 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2 bg-gray-200 hover:bg-gray-300 text-gray-700">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                         </svg>
@@ -86,7 +86,7 @@
                         </svg>
                     </div>
                 </div>
-                <div class="text-3xl font-bold mb-1">{{ $totalTransaksi }}</div>
+                <div class="text-3xl font-bold mb-1"><?php echo e($totalTransaksi); ?></div>
                 <div class="text-blue-100 text-sm">Total Transaksi</div>
             </div>
             <div class="card-hover bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
@@ -97,7 +97,7 @@
                         </svg>
                     </div>
                 </div>
-                <div class="text-3xl font-bold mb-1">Rp {{ number_format($totalOmset, 0, ',', '.') }}</div>
+                <div class="text-3xl font-bold mb-1">Rp <?php echo e(number_format($totalOmset, 0, ',', '.')); ?></div>
                 <div class="text-green-100 text-sm">Total Pendapatan</div>
             </div>
             <div class="card-hover rounded-xl shadow-lg p-6 text-white" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">
@@ -108,7 +108,7 @@
                         </svg>
                     </div>
                 </div>
-                <div class="text-3xl font-bold mb-1">Rp {{ number_format($totalKeuntungan, 0, ',', '.') }}</div>
+                <div class="text-3xl font-bold mb-1">Rp <?php echo e(number_format($totalKeuntungan, 0, ',', '.')); ?></div>
                 <div class="text-white/80 text-sm">Total Keuntungan</div>
             </div>
         </div>
@@ -131,8 +131,8 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-                        @forelse($transaksi as $index => $item)
-                        @php
+                        <?php $__empty_1 = true; $__currentLoopData = $transaksi; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <?php
                             // Detect if it's Transaksi (offline) or Pesanan (online)
                             $isOffline = isset($item->kasir);
                             $isPesanan = isset($item->user);
@@ -146,73 +146,79 @@
                             } else {
                                 $keuntungan = $item->keuntungan;
                             }
-                        @endphp
+                        ?>
                         <tr class="hover:bg-blue-50 transition-colors">
                             <td class="px-6 py-4">
-                                @if($isPesanan)
+                                <?php if($isPesanan): ?>
                                 <span class="px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">Online</span>
-                                @else
+                                <?php else: ?>
                                 <span class="px-2 py-1 rounded text-xs font-semibold bg-blue-100 text-blue-700">Offline</span>
-                                @endif
+                                <?php endif; ?>
                             </td>
                             <td class="px-6 py-4">
                                 <span class="font-semibold" style="color: #0C5587;">
-                                    @if($isPesanan)
-                                        {{ $item->kode_pesanan }}
-                                    @else
-                                        #T-{{ $item->id }}
-                                    @endif
+                                    <?php if($isPesanan): ?>
+                                        <?php echo e($item->kode_pesanan); ?>
+
+                                    <?php else: ?>
+                                        #T-<?php echo e($item->id); ?>
+
+                                    <?php endif; ?>
                                 </span>
                             </td>
-                            <td class="px-6 py-4 text-sm text-gray-700">{{ $item->created_at->format('d M Y H:i') }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-700"><?php echo e($item->created_at->format('d M Y H:i')); ?></td>
                             <td class="px-6 py-4 text-sm text-gray-700">
-                                @if($isPesanan)
-                                    {{ $item->kasir->name ?? '-' }}
-                                @else
-                                    {{ $item->kasir->name ?? '-' }}
-                                @endif
+                                <?php if($isPesanan): ?>
+                                    <?php echo e($item->kasir->name ?? '-'); ?>
+
+                                <?php else: ?>
+                                    <?php echo e($item->kasir->name ?? '-'); ?>
+
+                                <?php endif; ?>
                             </td>
                             <td class="px-6 py-4 text-sm">
-                                @if($isPesanan)
-                                    <span class="px-2 py-1 rounded text-xs font-medium text-white" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">{{ $item->user->name }}</span>
-                                @elseif($item->member)
-                                    <span class="px-2 py-1 rounded text-xs font-medium text-white" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);">{{ $item->member->name }}</span>
-                                @else
+                                <?php if($isPesanan): ?>
+                                    <span class="px-2 py-1 rounded text-xs font-medium text-white" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);"><?php echo e($item->user->name); ?></span>
+                                <?php elseif($item->member): ?>
+                                    <span class="px-2 py-1 rounded text-xs font-medium text-white" style="background: linear-gradient(135deg, #0C5587 0%, #0884D1 100%);"><?php echo e($item->member->name); ?></span>
+                                <?php else: ?>
                                     <span class="text-gray-400">Non-Member</span>
-                                @endif
+                                <?php endif; ?>
                             </td>
                             <td class="px-6 py-4">
                                 <span class="font-semibold text-green-600">
-                                    Rp {{ number_format($isPesanan ? $item->total_bayar : $item->total_harga, 0, ',', '.') }}
+                                    Rp <?php echo e(number_format($isPesanan ? $item->total_bayar : $item->total_harga, 0, ',', '.')); ?>
+
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-700">
-                                Rp {{ number_format($item->diskon ?? 0, 0, ',', '.') }}
+                                Rp <?php echo e(number_format($item->diskon ?? 0, 0, ',', '.')); ?>
+
                             </td>
                             <td class="px-6 py-4">
-                                <span class="font-semibold" style="color: #0C5587;">Rp {{ number_format($keuntungan, 0, ',', '.') }}</span>
+                                <span class="font-semibold" style="color: #0C5587;">Rp <?php echo e(number_format($keuntungan, 0, ',', '.')); ?></span>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                @if($isPesanan)
-                                    <a href="{{ route('admin.laporan.detail-pesanan', $item->id) }}" class="text-green-600 hover:text-green-800 font-medium text-sm flex items-center justify-center space-x-1">
+                                <?php if($isPesanan): ?>
+                                    <a href="<?php echo e(route('kasir.laporan.detail-pesanan', $item->id)); ?>" class="text-green-600 hover:text-green-800 font-medium text-sm flex items-center justify-center space-x-1">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                         </svg>
                                         <span>Detail</span>
                                     </a>
-                                @else
-                                    <a href="{{ route('admin.laporan.detail', $item->id) }}" class="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center justify-center space-x-1">
+                                <?php else: ?>
+                                    <a href="<?php echo e(route('kasir.laporan.detail', $item->id)); ?>" class="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center justify-center space-x-1">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                         </svg>
                                         <span>Detail</span>
                                     </a>
-                                @endif
+                                <?php endif; ?>
                             </td>
                         </tr>
-                        @empty
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                         <tr>
                             <td colspan="9" class="px-6 py-8 text-center text-gray-500">
                                 <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -221,22 +227,25 @@
                                 <p class="text-lg font-medium">Tidak ada data transaksi pada periode ini</p>
                             </td>
                         </tr>
-                        @endforelse
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
             
             <!-- Pagination -->
             <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
-                {{ $transaksi->appends([
+                <?php echo e($transaksi->appends([
                     'tanggal_mulai' => $tanggalMulai, 
-                    'tanggal_akhir' => $tanggalAkhir,
+                    'tanggal_akhir' => $tanggalAkhir, 
                     'filter_metode' => $filterMetode ?? 'all',
-                    'filter_pembeli' => $filterPembeli,
+                    'filter_pembeli' => $filterPembeli, 
                     'barang_id' => $barangId
-                ])->links() }}
+                ])->links()); ?>
+
             </div>
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\kasir\resources\views/kasir/laporan/index.blade.php ENDPATH**/ ?>

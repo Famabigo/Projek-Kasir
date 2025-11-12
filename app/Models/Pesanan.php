@@ -11,6 +11,7 @@ class Pesanan extends Model
 
     protected $fillable = [
         'user_id',
+        'kasir_id',
         'kode_pesanan',
         'total_harga',
         'diskon',
@@ -40,6 +41,11 @@ class Pesanan extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function kasir()
+    {
+        return $this->belongsTo(User::class, 'kasir_id');
+    }
+
     public function details()
     {
         return $this->hasMany(PesananDetail::class);
@@ -52,9 +58,8 @@ class Pesanan extends Model
         return 'PO' . $date . str_pad($count, 4, '0', STR_PAD_LEFT);
     }
 
-    /**
-     * Hitung denda keterlambatan pengambilan
-     * Denda: Rp 5.000 per hari
+        /**
+     * Hitung denda keterlambatan
      * Hanya untuk metode pickup, berdasarkan jadwal_ambil (3 hari dari order)
      */
     public function hitungDenda()
@@ -72,11 +77,17 @@ class Pesanan extends Model
             return 0;
         }
 
-        // Hitung selisih hari
+        // Hitung selisih hari (langsung dihitung begitu lewat jadwal)
+        // Gunakan ceiling agar hari pertama keterlambatan langsung kena denda
         $hariTelat = $jadwal->diffInDays($sekarang);
         
-        // Denda Rp 5.000 per hari
-        $denda = $hariTelat * 5000;
+        // Jika sudah lewat jadwal, minimal 1 hari denda
+        if ($hariTelat == 0 && $sekarang->gt($jadwal)) {
+            $hariTelat = 1;
+        }
+        
+        // Denda Rp 3.000 per hari
+        $denda = $hariTelat * 3000;
 
         return $denda;
     }
@@ -91,6 +102,11 @@ class Pesanan extends Model
 
         if ($this->metode_pengiriman === 'pickup' && $this->jadwal_ambil && now()->gt($this->jadwal_ambil)) {
             $hariTelat = $this->jadwal_ambil->diffInDays(now());
+            
+            // Jika sudah lewat jadwal, minimal 1 hari telat
+            if ($hariTelat == 0) {
+                $hariTelat = 1;
+            }
         }
 
         $this->update([

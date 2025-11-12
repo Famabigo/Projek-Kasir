@@ -57,17 +57,8 @@ class TransaksiController extends Controller
 
     public function store(Request $request)
     {
-        // Debug: Log RAW request data BEFORE any processing
-        Log::info('=== TRANSAKSI STORE DEBUG ===');
-        Log::info('RAW POST data:', ['data' => $_POST]);
-        Log::info('Request all:', ['data' => $request->all()]);
-        Log::info('Request input member_id:', ['value' => $request->input('member_id'), 'type' => gettype($request->input('member_id'))]);
-        Log::info('Request has member_id:', ['has' => $request->has('member_id')]);
-        Log::info('Request filled member_id:', ['filled' => $request->filled('member_id')]);
-        
         // Clean empty string to null for member_id
         if ($request->has('member_id') && $request->input('member_id') === '') {
-            Log::info('Converting empty string member_id to null');
             $request->merge(['member_id' => null]);
         }
         
@@ -80,8 +71,6 @@ class TransaksiController extends Controller
             'items.*.harga_jual' => 'required|numeric',
             'diskon' => 'nullable|numeric|min:0',
         ]);
-        
-        Log::info('After validation - member_id:', ['member_id' => $data['member_id'] ?? 'NULL']);
 
         DB::beginTransaction();
         try {
@@ -187,8 +176,8 @@ class TransaksiController extends Controller
     {
         $pesanan = Pesanan::with(['user', 'details.barang'])->findOrFail($id);
         
-        // Update denda jika ada waktu_ambil dan belum diambil
-        if ($pesanan->waktu_ambil && !$pesanan->tanggal_diambil) {
+        // Update denda jika ada jadwal_ambil dan belum diambil
+        if ($pesanan->jadwal_ambil && !$pesanan->tanggal_diambil) {
             $pesanan->updateDenda();
             $pesanan->refresh();
         }
@@ -202,17 +191,21 @@ class TransaksiController extends Controller
                 'diskon' => $pesanan->diskon,
                 'total_bayar' => $pesanan->total_bayar,
                 'catatan' => $pesanan->catatan,
-                'waktu_ambil_formatted' => $pesanan->waktu_ambil->format('d M Y, H:i'),
+                'metode_pengiriman' => $pesanan->metode_pengiriman,
+                'alamat_pengiriman' => $pesanan->alamat_pengiriman,
+                'no_hp_pengiriman' => $pesanan->no_hp_pengiriman,
+                'ongkir' => $pesanan->ongkir ?? 0,
+                'waktu_ambil_formatted' => $pesanan->waktu_ambil ? $pesanan->waktu_ambil->format('d M Y, H:i') : null,
                 'jadwal_ambil' => $pesanan->jadwal_ambil,
                 'jadwal_ambil_formatted' => $pesanan->jadwal_ambil ? $pesanan->jadwal_ambil->format('d M Y, H:i') : null,
                 'tanggal_diambil' => $pesanan->tanggal_diambil,
                 'tanggal_diambil_formatted' => $pesanan->tanggal_diambil ? $pesanan->tanggal_diambil->format('d M Y, H:i') : null,
-                'hari_telat' => $pesanan->hari_telat,
-                'denda_telat' => $pesanan->denda_telat,
+                'hari_telat' => $pesanan->hari_telat ?? 0,
+                'denda_telat' => $pesanan->denda_telat ?? 0,
                 'is_telat' => $pesanan->isTelat(),
                 'user' => [
                     'name' => $pesanan->user->name,
-                    'email' => $pesanan->user->email,
+                    'email' => $pesanan->user->email ?? '',
                 ]
             ],
             'details' => $pesanan->details->map(function($detail) {
@@ -341,6 +334,11 @@ class TransaksiController extends Controller
         ]);
 
         $pesanan = Pesanan::findOrFail($id);
+        
+        // Assign kasir yang bertanggung jawab (jika belum ada)
+        if (!$pesanan->kasir_id) {
+            $pesanan->kasir_id = auth()->id();
+        }
         
         // Jika dibatalkan, kembalikan stok
         if ($request->status === 'dibatalkan' && $pesanan->status !== 'dibatalkan') {

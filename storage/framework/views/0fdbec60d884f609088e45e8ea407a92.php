@@ -24,6 +24,13 @@
             color: #666;
             margin: 5px 0;
         }
+        .filter-info {
+            margin: 15px 0;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            font-size: 10px;
+        }
         .summary { 
             margin: 20px 0;
             padding: 15px;
@@ -72,46 +79,38 @@
             color: #666;
             font-size: 10px;
         }
-        .filter-info {
-            margin: 15px 0;
-            padding: 10px;
-            background: #FFF8DC;
-            border-left: 4px solid #FFA500;
-            border-radius: 3px;
-            font-size: 10px;
-        }
     </style>
 </head>
 <body>
     <div class="header">
         <h2>LAPORAN PENJUALAN</h2>
         <p><strong>ShopEase Kasir</strong></p>
-        <p>Periode: {{ \Carbon\Carbon::parse($tanggalMulai)->format('d M Y') }} - {{ \Carbon\Carbon::parse($tanggalAkhir)->format('d M Y') }}</p>
+        <p>Periode: <?php echo e(\Carbon\Carbon::parse($tanggalMulai)->format('d M Y')); ?> - <?php echo e(\Carbon\Carbon::parse($tanggalAkhir)->format('d M Y')); ?></p>
     </div>
     
-    @if(($filterMetode ?? 'all') !== 'all' || $filterPembeli !== 'all' || $barang)
+    <?php if(($filterMetode ?? 'all') !== 'all' || $filterPembeli !== 'all' || $barangId): ?>
     <div class="filter-info">
         <strong>Filter yang diterapkan:</strong><br>
-        @if(($filterMetode ?? 'all') === 'online')
+        <?php if(($filterMetode ?? 'all') === 'online'): ?>
         - Metode Pembelian: Pembelian Online<br>
-        @elseif(($filterMetode ?? 'all') === 'offline')
+        <?php elseif(($filterMetode ?? 'all') === 'offline'): ?>
         - Metode Pembelian: Pembelian Offline<br>
-        @endif
-        @if($filterPembeli === 'member')
+        <?php endif; ?>
+        <?php if($filterPembeli === 'member'): ?>
         - Tipe Pembeli: Hanya Member<br>
-        @elseif($filterPembeli === 'non-member')
+        <?php elseif($filterPembeli === 'non-member'): ?>
         - Tipe Pembeli: Hanya Non-Member<br>
-        @endif
-        @if($barang)
-        - Produk: {{ $barang->nama_barang }}<br>
-        @endif
+        <?php endif; ?>
+        <?php if($barangId): ?>
+        - Produk: <?php echo e(\App\Models\Barang::find($barangId)->nama_barang ?? 'Unknown'); ?><br>
+        <?php endif; ?>
     </div>
-    @endif
+    <?php endif; ?>
     
     <div class="summary">
-        <p><strong>Total Transaksi:</strong> {{ $transaksi->count() }} transaksi</p>
-        <p><strong>Total Pendapatan:</strong> Rp {{ number_format($totalOmset, 0, ',', '.') }}</p>
-        <p><strong>Total Keuntungan:</strong> Rp {{ number_format($totalKeuntungan, 0, ',', '.') }}</p>
+        <p><strong>Total Transaksi:</strong> <?php echo e($transaksi->count()); ?> transaksi</p>
+        <p><strong>Total Pendapatan:</strong> Rp <?php echo e(number_format($totalOmset, 0, ',', '.')); ?></p>
+        <p><strong>Total Keuntungan:</strong> Rp <?php echo e(number_format($totalKeuntungan, 0, ',', '.')); ?></p>
     </div>
     
     <table>
@@ -128,8 +127,8 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($transaksi as $index => $item)
-            @php
+            <?php $__currentLoopData = $transaksi; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php
                 $isPesanan = isset($item->user);
                 // Hitung keuntungan untuk pesanan online
                 $keuntungan = 0;
@@ -140,58 +139,64 @@
                 } else {
                     $keuntungan = $item->keuntungan;
                 }
-            @endphp
+            ?>
             <tr>
                 <td>
-                    @if($isPesanan)
+                    <?php if($isPesanan): ?>
                         <strong style="color: #22c55e;">Online</strong>
-                    @else
+                    <?php else: ?>
                         <strong style="color: #3b82f6;">Offline</strong>
-                    @endif
+                    <?php endif; ?>
                 </td>
                 <td>
                     <strong style="color: #0C5587;">
-                        @if($isPesanan)
-                            {{ $item->kode_pesanan }}
-                        @else
-                            #T-{{ $item->id }}
-                        @endif
+                        <?php if($isPesanan): ?>
+                            <?php echo e($item->kode_pesanan); ?>
+
+                        <?php else: ?>
+                            #T-<?php echo e($item->id); ?>
+
+                        <?php endif; ?>
                     </strong>
                 </td>
-                <td>{{ $item->created_at->format('d M Y H:i') }}</td>
+                <td><?php echo e($item->created_at->format('d M Y H:i')); ?></td>
                 <td>
-                    {{ $item->kasir->name ?? '-' }}
+                    <?php echo e($item->kasir->name ?? '-'); ?>
+
                 </td>
                 <td>
-                    @if($isPesanan)
-                        {{ $item->user->name ?? '-' }}
-                    @else
-                        {{ $item->member->name ?? 'Non-Member' }}
-                    @endif
+                    <?php if($isPesanan): ?>
+                        <?php echo e($item->user->name ?? '-'); ?>
+
+                    <?php else: ?>
+                        <?php echo e($item->member->name ?? 'Non-Member'); ?>
+
+                    <?php endif; ?>
                 </td>
                 <td class="text-right">
-                    <strong>Rp {{ number_format($isPesanan ? $item->total_bayar : $item->total_harga, 0, ',', '.') }}</strong>
+                    <strong>Rp <?php echo e(number_format($isPesanan ? $item->total_bayar : $item->total_harga, 0, ',', '.')); ?></strong>
                 </td>
-                <td class="text-right">Rp {{ number_format($item->diskon ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">Rp <?php echo e(number_format($item->diskon ?? 0, 0, ',', '.')); ?></td>
                 <td class="text-right" style="color: #0C5587;">
-                    <strong>Rp {{ number_format($keuntungan, 0, ',', '.') }}</strong>
+                    <strong>Rp <?php echo e(number_format($keuntungan, 0, ',', '.')); ?></strong>
                 </td>
             </tr>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </tbody>
         <tfoot>
             <tr style="background: #EDF7FC; font-weight: bold;">
                 <td colspan="5" style="text-align: right; color: #0C5587;">TOTAL:</td>
-                <td class="text-right" style="color: #0C5587;">Rp {{ number_format($totalOmset, 0, ',', '.') }}</td>
+                <td class="text-right" style="color: #0C5587;">Rp <?php echo e(number_format($totalOmset, 0, ',', '.')); ?></td>
                 <td class="text-right">-</td>
-                <td class="text-right" style="color: #0C5587;">Rp {{ number_format($totalKeuntungan, 0, ',', '.') }}</td>
+                <td class="text-right" style="color: #0C5587;">Rp <?php echo e(number_format($totalKeuntungan, 0, ',', '.')); ?></td>
             </tr>
         </tfoot>
     </table>
     
     <div class="footer">
-        <p>Dicetak pada: {{ now()->format('d M Y H:i') }}</p>
+        <p>Dicetak pada: <?php echo e(now()->format('d M Y H:i')); ?></p>
         <p>Dokumen ini digenerate secara otomatis oleh sistem</p>
     </div>
 </body>
 </html>
+<?php /**PATH C:\laragon\www\kasir\resources\views/kasir/laporan/pdf.blade.php ENDPATH**/ ?>
